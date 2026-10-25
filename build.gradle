@@ -58,6 +58,7 @@ dependencies {
   checkstyle "io.spring.javaformat:spring-javaformat-checkstyle:${springJavaformatCheckstyleVersion}"
   checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
   implementation 'org.springframework.modulith:spring-modulith-starter-core:1.2.0'
+  implementation 'org.springframework.modulith:spring-modulith-events-api:1.2.0'
   testImplementation 'org.springframework.modulith:spring-modulith-starter-test:1.2.0'
 }
 

@@ -18,9 +18,9 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
+import org.springframework.aot.hint.TypeReference;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Person;
-import org.springframework.samples.petclinic.vet.Vet;
 
 public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 
@@ -32,7 +32,9 @@ public class PetClinicRuntimeHints implements RuntimeHintsRegistrar {
 		hints.resources().registerPattern("mysql-default-conf");
 		hints.reflection().registerType(BaseEntity.class, typeHint -> typeHint.withJavaSerialization(true));
 		hints.reflection().registerType(Person.class, typeHint -> typeHint.withJavaSerialization(true));
-		hints.reflection().registerType(Vet.class, typeHint -> typeHint.withJavaSerialization(true));
+		hints.reflection()
+			.registerType(TypeReference.of("org.springframework.samples.petclinic.vet.Vet"),
+					typeHint -> typeHint.withJavaSerialization(true));
 	}
 
 }

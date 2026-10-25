@@ -54,9 +54,12 @@ class PetController {
 
 	private final PetTypeRepository types;
 
-	public PetController(OwnerRepository owners, PetTypeRepository types) {
+	private final OwnerService ownerService;
+
+	public PetController(OwnerRepository owners, PetTypeRepository types, OwnerService ownerService) {
 		this.owners = owners;
 		this.types = types;
+		this.ownerService = ownerService;
 	}
 
 	@ModelAttribute("types")
@@ -122,8 +125,7 @@ class PetController {
 		}
 
 		try {
-			owner.addPet(pet);
-			this.owners.saveAndFlush(owner);
+			this.ownerService.registerPet(owner, pet);
 		}
 		catch (DataIntegrityViolationException ex) {
 			if (!isDuplicatePetNameViolation(ex)) {

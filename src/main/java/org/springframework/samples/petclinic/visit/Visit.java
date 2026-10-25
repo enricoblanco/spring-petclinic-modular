@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.visit;
 
 import java.time.LocalDate;
 
@@ -34,7 +34,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "visits")
-public class Visit extends BaseEntity {
+class Visit extends BaseEntity {
 
 	@Column(name = "visit_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -43,6 +43,9 @@ public class Visit extends BaseEntity {
 	@NotBlank
 	@Size(max = 255)
 	private String description;
+
+	@Column(name = "pet_id")
+	private Integer petId;
 
 	/**
 	 * Creates a new instance of Visit for tomorrow
@@ -65,6 +68,14 @@ public class Visit extends BaseEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getPetId() {
+		return this.petId;
+	}
+
+	public void setPetId(Integer petId) {
+		this.petId = petId;
 	}
 
 }

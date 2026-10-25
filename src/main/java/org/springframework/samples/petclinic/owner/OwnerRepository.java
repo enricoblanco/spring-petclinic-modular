@@ -33,7 +33,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Michael Isvy
  * @author Wick Dynex
  */
-public interface OwnerRepository extends JpaRepository<Owner, Integer> {
+ interface OwnerRepository extends JpaRepository<Owner, Integer> {
 
 	/**
 	 * Retrieve {@link Owner}s from the data store by last name, returning all owners

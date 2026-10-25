@@ -25,6 +25,6 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "types")
-public class PetType extends NamedEntity {
+ class PetType extends NamedEntity {
 
 }

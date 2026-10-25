@@ -21,7 +21,6 @@ import java.util.Objects;
 
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.samples.petclinic.model.Person;
-import org.springframework.util.Assert;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,7 +46,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "owners")
-public class Owner extends Person {
+ class Owner extends Person {
 
 	@Column
 	@NotBlank
@@ -166,23 +165,6 @@ public class Owner extends Person {
 			.append("city", this.city)
 			.append("telephone", this.telephone)
 			.toString();
-	}
-
-	/**
-	 * Adds the given {@link Visit} to the {@link Pet} with the given identifier.
-	 * @param petId the identifier of the {@link Pet}, must not be {@literal null}.
-	 * @param visit the visit to add, must not be {@literal null}.
-	 */
-	public void addVisit(Integer petId, Visit visit) {
-
-		Assert.notNull(petId, "Pet identifier must not be null!");
-		Assert.notNull(visit, "Visit must not be null!");
-
-		Pet pet = getPet(petId);
-
-		Assert.notNull(pet, "Invalid Pet identifier!");
-
-		pet.addVisit(visit);
 	}
 
 }

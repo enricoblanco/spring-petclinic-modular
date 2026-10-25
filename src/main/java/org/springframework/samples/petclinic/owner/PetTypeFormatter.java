@@ -34,7 +34,7 @@ import java.util.Objects;
  * @author Michael Isvy
  */
 @Component
-public class PetTypeFormatter implements Formatter<PetType> {
+ class PetTypeFormatter implements Formatter<PetType> {
 
 	private final PetTypeRepository types;
 

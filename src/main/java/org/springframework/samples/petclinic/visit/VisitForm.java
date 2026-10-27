@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 /**
@@ -19,6 +20,9 @@ class VisitForm {
 	@NotBlank
 	@Size(max = 255)
 	private String description;
+
+	@NotNull
+	private Integer vetId;
 
 	public LocalDate getDate() {
 		return this.date;
@@ -36,6 +40,14 @@ class VisitForm {
 		this.description = description;
 	}
 
+	public Integer getVetId() {
+		return this.vetId;
+	}
+
+	public void setVetId(Integer vetId) {
+		this.vetId = vetId;
+	}
+
 	/**
 	 * The form only ever books new visits; the template uses this for its heading.
 	 */
@@ -48,6 +60,7 @@ class VisitForm {
 		visit.setPetId(petId);
 		visit.setDate(this.date);
 		visit.setDescription(this.description);
+		visit.setVetId(this.vetId);
 		return visit;
 	}
 

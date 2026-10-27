@@ -47,6 +47,9 @@ class Visit extends BaseEntity {
 	@Column(name = "pet_id")
 	private Integer petId;
 
+	@Column(name = "vet_id")
+	private Integer vetId;
+
 	/**
 	 * Creates a new instance of Visit for tomorrow
 	 */
@@ -76,6 +79,14 @@ class Visit extends BaseEntity {
 
 	public void setPetId(Integer petId) {
 		this.petId = petId;
+	}
+
+	public Integer getVetId() {
+		return this.vetId;
+	}
+
+	public void setVetId(Integer vetId) {
+		this.vetId = vetId;
 	}
 
 }

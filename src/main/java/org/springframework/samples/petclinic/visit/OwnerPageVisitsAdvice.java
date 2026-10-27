@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.samples.petclinic.owner.OwnerExternalAPI;
+import org.springframework.samples.petclinic.vet.VetExternalAPI;
+import org.springframework.samples.petclinic.vet.VetSummary;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +22,12 @@ class OwnerPageVisitsAdvice {
 
 	private final OwnerExternalAPI ownerApi;
 
-	OwnerPageVisitsAdvice(VisitRepository visits, OwnerExternalAPI ownerApi) {
+	private final VetExternalAPI vetApi;
+
+	OwnerPageVisitsAdvice(VisitRepository visits, OwnerExternalAPI ownerApi, VetExternalAPI vetApi) {
 		this.visits = visits;
 		this.ownerApi = ownerApi;
+		this.vetApi = vetApi;
 	}
 
 	@ModelAttribute("visitsByPet")
@@ -36,6 +41,18 @@ class OwnerPageVisitsAdvice {
 			visitsByPet.put(petId, this.visits.findByPetId(petId));
 		}
 		return visitsByPet;
+	}
+
+	@ModelAttribute("vetNames")
+	Map<Integer, String> vetNames(@PathVariable(name = "ownerId", required = false) String ownerId) {
+		Map<Integer, String> vetNames = new LinkedHashMap<>();
+		if (parseOwnerId(ownerId) == null) {
+			return vetNames;
+		}
+		for (VetSummary vet : this.vetApi.findAllVets()) {
+			vetNames.put(vet.id(), vet.name());
+		}
+		return vetNames;
 	}
 
 	// invalid ids are left for OwnerController to reject

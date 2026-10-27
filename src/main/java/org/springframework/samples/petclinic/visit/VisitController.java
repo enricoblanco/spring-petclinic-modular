@@ -1,10 +1,13 @@
 package org.springframework.samples.petclinic.visit;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.samples.petclinic.owner.OwnerExternalAPI;
 import org.springframework.samples.petclinic.owner.PetDetails;
+import org.springframework.samples.petclinic.vet.VetExternalAPI;
+import org.springframework.samples.petclinic.vet.VetSummary;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,9 +27,12 @@ class VisitController {
 
 	private final OwnerExternalAPI ownerApi;
 
-	public VisitController(VisitRepository visits, OwnerExternalAPI ownerApi) {
+	private final VetExternalAPI vetApi;
+
+	public VisitController(VisitRepository visits, OwnerExternalAPI ownerApi, VetExternalAPI vetApi) {
 		this.visits = visits;
 		this.ownerApi = ownerApi;
+		this.vetApi = vetApi;
 	}
 
 	@InitBinder
@@ -41,6 +47,11 @@ class VisitController {
 		model.put("pet", pet);
 		model.put("visits", this.visits.findByPetId(petId));
 		return new VisitForm();
+	}
+
+	@ModelAttribute("vets")
+	public List<VetSummary> populateVets() {
+		return this.vetApi.findAllVets();
 	}
 
 	@ModelAttribute("minVisitDate")
@@ -58,6 +69,10 @@ class VisitController {
 									  BindingResult result, RedirectAttributes redirectAttributes) {
 		if (visit.getDate() != null && !visit.getDate().isAfter(LocalDate.now())) {
 			result.rejectValue("date", "typeMismatch.visitDate");
+		}
+		if (visit.getVetId() != null
+				&& this.vetApi.findAllVets().stream().noneMatch(vet -> vet.id().equals(visit.getVetId()))) {
+			result.rejectValue("vetId", "typeMismatch");
 		}
 
 		if (result.hasErrors()) {

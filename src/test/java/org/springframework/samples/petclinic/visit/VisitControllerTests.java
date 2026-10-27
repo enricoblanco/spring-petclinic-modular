@@ -41,6 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.samples.petclinic.owner.OwnerExternalAPI;
 import org.springframework.samples.petclinic.owner.PetDetails;
+import org.springframework.samples.petclinic.vet.VetExternalAPI;
+import org.springframework.samples.petclinic.vet.VetSummary;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -70,6 +72,9 @@ class VisitControllerTests {
 	@MockitoBean
 	private OwnerExternalAPI ownerApi;
 
+	@MockitoBean
+	private VetExternalAPI vetApi;
+
 	private PetDetails petDetails;
 
 	@BeforeEach
@@ -83,6 +88,7 @@ class VisitControllerTests {
 			"Franklin"
 		);
 		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, TEST_PET_ID)).willReturn(this.petDetails);
+		given(this.vetApi.findAllVets()).willReturn(List.of(new VetSummary(1, "James Carter")));
 	}
 
 	@Test
@@ -133,7 +139,8 @@ class VisitControllerTests {
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
 				.param("id", "99")
 				.param("date", date.toString())
-				.param("description", "Vaccination"))
+				.param("description", "Vaccination")
+				.param("vetId", "1"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(flash().attribute("message", "Your visit has been booked"));
 
@@ -143,6 +150,7 @@ class VisitControllerTests {
 		assertThat(saved.getValue().getPetId()).isEqualTo(TEST_PET_ID);
 		assertThat(saved.getValue().getDate()).isEqualTo(date);
 		assertThat(saved.getValue().getDescription()).isEqualTo("Vaccination");
+		assertThat(saved.getValue().getVetId()).isEqualTo(1);
 	}
 
 	@Test
@@ -151,7 +159,8 @@ class VisitControllerTests {
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
 				.param("name", "George")
 				.param("date", LocalDate.now().plusDays(1).toString())
-				.param("description", "Visit Description"))
+				.param("description", "Visit Description")
+				.param("vetId", "1"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 
@@ -193,6 +202,19 @@ class VisitControllerTests {
 				.param("date", LocalDate.now().plusDays(1).toString())
 				.param("description", "a".repeat(256)))
 			.andExpect(model().attributeHasFieldErrors("visit", "description"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
+	}
+
+	@Test
+	void processNewVisitFormHasErrorsWhenVetIsMissing() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("date", LocalDate.now().plusDays(1).toString())
+				.param("description", "Visit Description"))
+			.andExpect(model().attributeHasFieldErrors("visit", "vetId"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
 

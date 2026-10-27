@@ -26,9 +26,9 @@ class OwnerService implements OwnerExternalAPI {
 		owner.addPet(pet);
 		// saveAndFlush merges the owner: only the returned copy carries the generated pet id
 		Owner saved = this.owners.saveAndFlush(owner);
-		Pet savedPet = (saved != null) ? saved.getPet(pet.getName()) : null;
+		Pet savedPet = saved.getPet(pet.getName());
 		Integer petId = (savedPet != null) ? savedPet.getId() : pet.getId();
-		this.events.publishEvent(new PetRegisteredEvent(petId, owner.getId()));
+		this.events.publishEvent(new PetRegisteredEvent(petId, saved.getId()));
 	}
 
 	@Override

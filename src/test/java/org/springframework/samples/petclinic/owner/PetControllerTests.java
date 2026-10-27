@@ -88,6 +88,8 @@ class PetControllerTests {
 		pet.setName("petty");
 		dog.setName("doggy");
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(owner));
+		// like JPA, saveAndFlush hands back the managed owner (never null)
+		given(this.owners.saveAndFlush(any(Owner.class))).willAnswer(invocation -> invocation.getArgument(0));
 	}
 
 	@Test

@@ -35,15 +35,12 @@ class VisitController {
 	}
 
 	@ModelAttribute("visit")
-	public Visit loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
+	public VisitForm loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
 								  Map<String, Object> model) {
 		PetDetails pet = this.ownerApi.findPetDetails(ownerId, petId);
 		model.put("pet", pet);
 		model.put("visits", this.visits.findByPetId(petId));
-
-		Visit visit = new Visit();
-		visit.setPetId(petId);
-		return visit;
+		return new VisitForm();
 	}
 
 	@ModelAttribute("minVisitDate")
@@ -57,7 +54,7 @@ class VisitController {
 	}
 
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
-	public String processNewVisitForm(@PathVariable int petId, @Valid Visit visit,
+	public String processNewVisitForm(@PathVariable int petId, @Valid @ModelAttribute("visit") VisitForm visit,
 									  BindingResult result, RedirectAttributes redirectAttributes) {
 		if (visit.getDate() != null && !visit.getDate().isAfter(LocalDate.now())) {
 			result.rejectValue("date", "typeMismatch.visitDate");
@@ -67,8 +64,7 @@ class VisitController {
 			return "pets/createOrUpdateVisitForm";
 		}
 
-		visit.setPetId(petId);
-		this.visits.save(visit);
+		this.visits.save(visit.toVisit(petId));
 		redirectAttributes.addFlashAttribute("message", "Your visit has been booked");
 		return "redirect:/owners/{ownerId}";
 	}

@@ -16,20 +16,27 @@
 
 package org.springframework.samples.petclinic.visit;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.samples.petclinic.owner.OwnerExternalAPI;
@@ -37,6 +44,7 @@ import org.springframework.samples.petclinic.owner.PetDetails;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 /**
  * Test class for {@link VisitController}
@@ -62,9 +70,11 @@ class VisitControllerTests {
 	@MockitoBean
 	private OwnerExternalAPI ownerApi;
 
+	private PetDetails petDetails;
+
 	@BeforeEach
 	void init() {
-		PetDetails petDetails = new PetDetails(
+		this.petDetails = new PetDetails(
 			TEST_PET_ID,
 			"Max",
 			LocalDate.now(),
@@ -72,7 +82,7 @@ class VisitControllerTests {
 			"George",
 			"Franklin"
 		);
-		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, TEST_PET_ID)).willReturn(petDetails);
+		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, TEST_PET_ID)).willReturn(this.petDetails);
 	}
 
 	@Test
@@ -80,6 +90,59 @@ class VisitControllerTests {
 		mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+	}
+
+	@Test
+	void initNewVisitFormLoadsPetAndPreviousVisitsThroughModuleApis() throws Exception {
+		Visit previous = new Visit();
+		previous.setPetId(TEST_PET_ID);
+		previous.setDate(LocalDate.of(2013, 1, 1));
+		previous.setDescription("rabies shot");
+		given(this.visits.findByPetId(TEST_PET_ID)).willReturn(List.of(previous));
+
+		MvcResult result = mockMvc
+			.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
+			.andExpect(status().isOk())
+			.andReturn();
+
+		Map<String, Object> model = result.getModelAndView().getModel();
+		assertThat(model.get("pet")).isEqualTo(this.petDetails);
+		assertThat(model.get("visits")).isEqualTo(List.of(previous));
+		assertThat(model.get("minVisitDate")).isEqualTo(LocalDate.now().plusDays(1));
+		VisitForm visit = (VisitForm) model.get("visit");
+		assertThat(visit.isNew()).isTrue();
+		assertThat(visit.getDate()).isEqualTo(LocalDate.now().plusDays(1));
+		verify(this.ownerApi).findPetDetails(TEST_OWNER_ID, TEST_PET_ID);
+	}
+
+	@Test
+	void initNewVisitFormFailsForUnknownPet() {
+		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, 99))
+			.willThrow(new IllegalArgumentException("Pet with id 99 not found for owner with id 1."));
+
+		assertThatThrownBy(
+				() -> mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, 99)))
+			.hasCauseInstanceOf(IllegalArgumentException.class);
+		verify(this.visits, never()).findByPetId(99);
+	}
+
+	@Test
+	void processNewVisitFormSavesVisitForPetAndIgnoresId() throws Exception {
+		LocalDate date = LocalDate.now().plusDays(3);
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("id", "99")
+				.param("date", date.toString())
+				.param("description", "Vaccination"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(flash().attribute("message", "Your visit has been booked"));
+
+		ArgumentCaptor<Visit> saved = ArgumentCaptor.forClass(Visit.class);
+		verify(this.visits).save(saved.capture());
+		assertThat(saved.getValue().getId()).isNull();
+		assertThat(saved.getValue().getPetId()).isEqualTo(TEST_PET_ID);
+		assertThat(saved.getValue().getDate()).isEqualTo(date);
+		assertThat(saved.getValue().getDescription()).isEqualTo("Vaccination");
 	}
 
 	@Test
@@ -103,6 +166,8 @@ class VisitControllerTests {
 			.andExpect(model().attributeHasErrors("visit"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
 	}
 
 	@Test
@@ -116,6 +181,8 @@ class VisitControllerTests {
 			.andExpect(model().attributeHasFieldErrorCode("visit", "date", "typeMismatch.visitDate"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
 	}
 
 	@Test
@@ -128,6 +195,8 @@ class VisitControllerTests {
 			.andExpect(model().attributeHasFieldErrors("visit", "description"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
 	}
 
 }

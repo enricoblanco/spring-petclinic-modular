@@ -1,6 +1,7 @@
 plugins {
   id 'java'
   id 'checkstyle'
+  id 'jacoco'
   id 'org.springframework.boot' version '4.1.0'
   id 'io.spring.dependency-management' version '1.1.7'
   id 'org.graalvm.buildtools.native' version '1.1.2'
@@ -64,6 +65,15 @@ dependencies {
 
 tasks.named('test') {
   useJUnitPlatform()
+  finalizedBy 'jacocoTestReport'
+}
+
+// XML coverage report consumed by SonarQube (sonar.coverage.jacoco.xmlReportPaths)
+tasks.named('jacocoTestReport') {
+  dependsOn 'test'
+  reports {
+    xml.required = true
+  }
 }
 
 tasks.named("cyclonedxDirectBom").configure {
@@ -101,20 +111,69 @@ sonar {
     property "sonar.projectKey", "spring-petclinic-modular"
     property "sonar.host.url", "http://localhost:9000"
     property "sonar.token", "sqp_680ef0944a97863df78b284bcc4bf5754844f800"
+    property "sonar.coverage.jacoco.xmlReportPaths",
+      layout.buildDirectory.file('reports/jacoco/test/jacocoTestReport.xml').get().asFile.path
   }
 }
 
-configurations {
-  jdepend
+tasks.named('sonar') {
+  dependsOn 'jacocoTestReport'
+}
+
+// Robert C. Martin package metrics (Ca, Ce, I, A, D) via ArchUnit: JDepend 2.9.1 cannot read Java 21 bytecode
+sourceSets {
+  metrics
 }
 
 dependencies {
-  jdepend 'jdepend:jdepend:2.9.1'
+  metricsImplementation 'com.tngtech.archunit:archunit:1.3.0'
 }
 
+checkstyleMetrics.enabled = false
+checkFormatMetrics.enabled = false
+
 tasks.register('jdependReport', JavaExec) {
+  group = 'verification'
+  description = 'Prints Robert C. Martin package metrics (ArchUnit, Java 21 compatible)'
   dependsOn 'classes'
-  mainClass = 'jdepend.textui.JDepend'
-  classpath = configurations.jdepend
-  args = ['build/classes/java/main']
+  classpath = sourceSets.metrics.runtimeClasspath
+  mainClass = 'org.springframework.samples.petclinic.metrics.MartinMetricsReport'
+  outputs.upToDateWhen { false }
+  def branch = providers.exec {
+    commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+    ignoreExitValue = true
+  }.standardOutput.asText.map { it.trim() }
+  def reportDir = layout.buildDirectory.dir('reports/martin-metrics')
+  doFirst {
+    args = [metricsClassesDir(), 'org.springframework.samples.petclinic', reportDir.get().asFile.path,
+            metricsLabel(branch)]
+  }
+}
+
+// Encapsulation indicators per module (public types, exposed entities/repositories/beans, cross-module coupling)
+tasks.register('encapsulationReport', JavaExec) {
+  group = 'verification'
+  description = 'Prints encapsulation and cross-module coupling indicators (ArchUnit)'
+  dependsOn 'classes'
+  classpath = sourceSets.metrics.runtimeClasspath
+  mainClass = 'org.springframework.samples.petclinic.metrics.EncapsulationReport'
+  outputs.upToDateWhen { false }
+  def branch = providers.exec {
+    commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+    ignoreExitValue = true
+  }.standardOutput.asText.map { it.trim() }
+  def reportDir = layout.buildDirectory.dir('reports/encapsulation')
+  doFirst {
+    args = [metricsClassesDir(), 'org.springframework.samples.petclinic', reportDir.get().asFile.path,
+            metricsLabel(branch)]
+  }
+}
+
+// -PclassesDir and -Plabel measure another version (e.g. a worktree of main) without copying the metrics code
+def metricsClassesDir() {
+  project.findProperty('classesDir') ?: layout.buildDirectory.dir('classes/java/main').get().asFile.path
+}
+
+def metricsLabel(branch) {
+  project.findProperty('label') ?: branch.getOrElse('local')
 }

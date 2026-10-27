@@ -110,7 +110,8 @@ sonar {
   properties {
     property "sonar.projectKey", "spring-petclinic-modular"
     property "sonar.host.url", "http://localhost:9000"
-    property "sonar.token", "sqp_680ef0944a97863df78b284bcc4bf5754844f800"
+    // token comes from the SONAR_TOKEN environment variable, never from the build file
+    property "sonar.token", System.getenv("SONAR_TOKEN") ?: ""
     property "sonar.coverage.jacoco.xmlReportPaths",
       layout.buildDirectory.file('reports/jacoco/test/jacocoTestReport.xml').get().asFile.path
   }

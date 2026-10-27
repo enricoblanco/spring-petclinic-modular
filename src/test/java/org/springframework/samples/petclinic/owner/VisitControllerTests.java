@@ -28,11 +28,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledInNativeImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetFormatter;
+import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.test.context.aot.DisabledInAotMode;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -41,7 +47,8 @@ import java.util.Optional;
  * @author Colin But
  * @author Wick Dynex
  */
-@WebMvcTest(VisitController.class)
+@WebMvcTest(value = VisitController.class,
+		includeFilters = @ComponentScan.Filter(value = VetFormatter.class, type = FilterType.ASSIGNABLE_TYPE))
 @DisabledInNativeImage
 @DisabledInAotMode
 class VisitControllerTests {
@@ -56,6 +63,9 @@ class VisitControllerTests {
 	@MockitoBean
 	private OwnerRepository owners;
 
+	@MockitoBean
+	private VetRepository vets;
+
 	@BeforeEach
 	void init() {
 		Owner owner = new Owner();
@@ -63,6 +73,11 @@ class VisitControllerTests {
 		owner.addPet(pet);
 		pet.setId(TEST_PET_ID);
 		given(this.owners.findById(TEST_OWNER_ID)).willReturn(Optional.of(owner));
+		Vet carter = new Vet();
+		carter.setId(1);
+		carter.setFirstName("James");
+		carter.setLastName("Carter");
+		given(this.vets.findAll()).willReturn(List.of(carter));
 	}
 
 	@Test
@@ -78,7 +93,8 @@ class VisitControllerTests {
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
 				.param("name", "George")
 				.param("date", LocalDate.now().plusDays(1).toString())
-				.param("description", "Visit Description"))
+				.param("description", "Visit Description")
+				.param("vet", "James Carter"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/owners/{ownerId}"));
 	}
@@ -114,6 +130,17 @@ class VisitControllerTests {
 				.param("date", LocalDate.now().plusDays(1).toString())
 				.param("description", "a".repeat(256)))
 			.andExpect(model().attributeHasFieldErrors("visit", "description"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+	}
+
+	@Test
+	void processNewVisitFormHasErrorsWhenVetIsMissing() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("date", LocalDate.now().plusDays(1).toString())
+				.param("description", "Visit Description"))
+			.andExpect(model().attributeHasFieldErrors("visit", "vet"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
 	}

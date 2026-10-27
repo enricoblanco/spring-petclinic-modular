@@ -15,7 +15,9 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -50,10 +52,15 @@ class OwnerController {
 
 	private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
 
+	private static final int MAX_RECENT_VISITS = 5;
+
 	private final OwnerRepository owners;
 
-	public OwnerController(OwnerRepository owners) {
+	private final VisitRepository visits;
+
+	public OwnerController(OwnerRepository owners, VisitRepository visits) {
 		this.owners = owners;
+		this.visits = visits;
 	}
 
 	@InitBinder
@@ -182,6 +189,12 @@ class OwnerController {
 		Owner owner = optionalOwner.orElseThrow(() -> new IllegalArgumentException(
 				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 		mav.addObject(owner);
+		Map<Integer, List<Visit>> recentVisitsByPet = new LinkedHashMap<>();
+		for (Pet pet : owner.getPets()) {
+			recentVisitsByPet.put(pet.getId(),
+					this.visits.findRecentByPetId(pet.getId(), PageRequest.of(0, MAX_RECENT_VISITS)));
+		}
+		mav.addObject("recentVisitsByPet", recentVisitsByPet);
 		return mav;
 	}
 

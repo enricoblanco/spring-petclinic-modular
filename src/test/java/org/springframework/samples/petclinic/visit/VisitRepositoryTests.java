@@ -73,4 +73,23 @@ class VisitRepositoryTests {
 			});
 	}
 
+	@Test
+	@Transactional
+	void shouldFindOnlyTheMostRecentVisitsNewestFirst() {
+		for (int daysAgo = 1; daysAgo <= 6; daysAgo++) {
+			Visit visit = new Visit();
+			visit.setPetId(7);
+			visit.setDate(LocalDate.now().minusDays(daysAgo));
+			visit.setDescription("checkup " + daysAgo);
+			this.visits.save(visit);
+		}
+
+		List<Visit> recent = this.visits.findTop5ByPetIdOrderByDateDesc(7);
+
+		assertThat(recent).hasSize(5)
+			.extracting(Visit::getDate)
+			.containsExactly(LocalDate.now().minusDays(1), LocalDate.now().minusDays(2), LocalDate.now().minusDays(3),
+					LocalDate.now().minusDays(4), LocalDate.now().minusDays(5));
+	}
+
 }

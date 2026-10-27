@@ -33,7 +33,7 @@ class OwnerPageVisitsAdvice {
 			return visitsByPet;
 		}
 		for (Integer petId : this.ownerApi.findPetIds(id)) {
-			visitsByPet.put(petId, this.visits.findByPetId(petId));
+			visitsByPet.put(petId, this.visits.findTop5ByPetIdOrderByDateDesc(petId));
 		}
 		return visitsByPet;
 	}

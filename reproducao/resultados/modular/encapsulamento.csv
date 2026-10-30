@@ -1,0 +1,9 @@
+indicador,valor,total
+tipos_public,9,33
+entity_public,0,6
+repositorios_public,0,4
+beans_public,1,16
+deps_entre_modulos,13,
+deps_em_implementacao,0,
+dependentes_de_visit_fora_de_visit,0,
+ciclos_entre_modulos,0,

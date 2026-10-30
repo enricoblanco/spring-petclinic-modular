@@ -1,0 +1,115 @@
+==============================================================================
+Robert C. Martin package metrics (ArchUnit) - baseline
+Classes dir: <baseline>/build/classes/java/main
+Arquivos .class no disco: 25 | Classes importadas: 25  (OK, nenhuma classe descartada)
+==============================================================================
+
+Pacote: org.springframework.samples.petclinic  [petclinic]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     2   (public: 2)
+  Concrete Classes:       2
+  Abstract Classes (Na):  0
+  Classes concretas:
+    - PetClinicApplication (public)
+    - PetClinicRuntimeHints (public)
+  Classes abstratas/interfaces:
+    (nenhuma)
+  Ca (Afferent Coupling): 0  <- (nenhum)
+  Ce (Efferent Coupling): 2  -> model, vet
+  I  (Instability):       1.00
+  A  (Abstractness)  ArchUnit (so public): 0.00 | todas as classes: 0.00
+  D  (Distance)      ArchUnit (so public): 0.00 | todas as classes: 0.00
+
+Pacote: org.springframework.samples.petclinic.model  [model]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     3   (public: 3)
+  Concrete Classes:       3
+  Abstract Classes (Na):  0
+  Classes concretas:
+    - BaseEntity (public)
+    - NamedEntity (public)
+    - Person (public)
+  Classes abstratas/interfaces:
+    (nenhuma)
+  Ca (Afferent Coupling): 3  <- petclinic, owner, vet
+  Ce (Efferent Coupling): 0  -> (nenhum)
+  I  (Instability):       0.00
+  A  (Abstractness)  ArchUnit (so public): 0.00 | todas as classes: 0.00
+  D  (Distance)      ArchUnit (so public): 1.00 | todas as classes: 1.00
+
+Pacote: org.springframework.samples.petclinic.owner  [owner]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     11   (public: 8)
+  Concrete Classes:       9
+  Abstract Classes (Na):  2
+  Classes concretas:
+    - Owner (public)
+    - OwnerController (package-private/outra)
+    - Pet (public)
+    - PetController (package-private/outra)
+    - PetType (public)
+    - PetTypeFormatter (public)
+    - PetValidator (public)
+    - Visit (public)
+    - VisitController (package-private/outra)
+  Classes abstratas/interfaces:
+    - OwnerRepository (public, interface)
+    - PetTypeRepository (public, interface)
+  Ca (Afferent Coupling): 0  <- (nenhum)
+  Ce (Efferent Coupling): 1  -> model
+  I  (Instability):       1.00
+  A  (Abstractness)  ArchUnit (so public): 0.25 | todas as classes: 0.18
+  D  (Distance)      ArchUnit (so public): 0.25 | todas as classes: 0.18
+
+Pacote: org.springframework.samples.petclinic.system  [system]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     4   (public: 1)
+  Concrete Classes:       4
+  Abstract Classes (Na):  0
+  Classes concretas:
+    - CacheConfiguration (package-private/outra)
+    - CrashController (package-private/outra)
+    - WebConfiguration (public)
+    - WelcomeController (package-private/outra)
+  Classes abstratas/interfaces:
+    (nenhuma)
+  Ca (Afferent Coupling): 0  <- (nenhum)
+  Ce (Efferent Coupling): 0  -> (nenhum)
+  I  (Instability):       1.00
+  A  (Abstractness)  ArchUnit (so public): 0.00 | todas as classes: 0.00
+  D  (Distance)      ArchUnit (so public): 0.00 | todas as classes: 0.00
+
+Pacote: org.springframework.samples.petclinic.vet  [vet]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     5   (public: 4)
+  Concrete Classes:       4
+  Abstract Classes (Na):  1
+  Classes concretas:
+    - Specialty (public)
+    - Vet (public)
+    - VetController (package-private/outra)
+    - Vets (public)
+  Classes abstratas/interfaces:
+    - VetRepository (public, interface)
+  Ca (Afferent Coupling): 1  <- petclinic
+  Ce (Efferent Coupling): 1  -> model
+  I  (Instability):       0.50
+  A  (Abstractness)  ArchUnit (so public): 0.25 | todas as classes: 0.20
+  D  (Distance)      ArchUnit (so public): 0.25 | todas as classes: 0.30
+
+Resumo (Markdown) - baseline
+| Pacote | Nc | Concretas | Na | Public | Ca | Ce | I | A (ArchUnit) | D (ArchUnit) | A (todas) | D (todas) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| petclinic | 2 | 2 | 0 | 2 | 0 | 2 | 1.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| model | 3 | 3 | 0 | 3 | 3 | 0 | 0.00 | 0.00 | 1.00 | 0.00 | 1.00 |
+| owner | 11 | 9 | 2 | 8 | 0 | 1 | 1.00 | 0.25 | 0.25 | 0.18 | 0.18 |
+| system | 4 | 4 | 0 | 1 | 0 | 0 | 1.00 | 0.00 | 0.00 | 0.00 | 0.00 |
+| vet | 5 | 4 | 1 | 4 | 1 | 1 | 0.50 | 0.25 | 0.25 | 0.20 | 0.30 |
+
+Resumo (CSV) - baseline
+pacote,nc,concretas,na,public,ca,ce,i,a_archunit,d_archunit,a_todas,d_todas
+petclinic,2,2,0,2,0,2,1.00,0.00,0.00,0.00,0.00
+model,3,3,0,3,3,0,0.00,0.00,1.00,0.00,1.00
+owner,11,9,2,8,0,1,1.00,0.25,0.25,0.18,0.18
+system,4,4,0,1,0,0,1.00,0.00,0.00,0.00,0.00
+vet,5,4,1,4,1,1,0.50,0.25,0.25,0.20,0.30

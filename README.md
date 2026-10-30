@@ -1,3 +1,25 @@
+## Reprodução do TCC
+
+[![Reprodução do TCC](https://github.com/enricoblanco/spring-petclinic-modular/actions/workflows/reproducao.yml/badge.svg?branch=refatoracao-modular)](https://github.com/enricoblanco/spring-petclinic-modular/actions/workflows/reproducao.yml)
+
+Este repositório contém o código e as medições do TCC *Análise de manutenibilidade em arquiteturas de software: um estudo comparativo entre monólito tradicional e monólito modular no ecossistema Java* (UNISINOS, 2026).
+
+- Versão final do estudo: tag [`tcc-final`](https://github.com/enricoblanco/spring-petclinic-modular/tree/tcc-final)
+- Resultados reproduzidos (testes, encapsulamento e métricas de Martin, baseline × modular): [`reproducao/resultados/RESUMO.md`](reproducao/resultados/RESUMO.md)
+- Detalhes do pacote de reprodução: [`reproducao/README.md`](reproducao/README.md)
+
+Para reproduzir (JDK 21, Docker, Python 3):
+
+```bash
+git clone https://github.com/enricoblanco/spring-petclinic-modular.git
+cd spring-petclinic-modular
+git checkout tcc-final
+./reproducao/reproduzir.sh
+git status --porcelain reproducao/resultados   # vazio = resultados idênticos aos do artigo
+```
+
+---
+
 # Spring PetClinic Sample Application [![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/maven-build.yml)[![Build Status](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml/badge.svg)](https://github.com/spring-projects/spring-petclinic/actions/workflows/gradle-build.yml)
 
 [![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/spring-projects/spring-petclinic) [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=7517918)

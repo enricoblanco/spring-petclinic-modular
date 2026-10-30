@@ -1,0 +1,71 @@
+# Reexecuta as medições do TCC (baseline e versão modular) e falha se os resultados
+# forem diferentes dos versionados em reproducao/resultados. O SonarQube fica de fora.
+name: Reprodução do TCC
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ refatoracao-modular ]
+
+permissions:
+  contents: read
+
+jobs:
+  reproducao:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # the baseline commit (acd6c2b) is measured from a worktree, so the full history is needed
+          fetch-depth: 0
+
+      - name: Configurar JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Reproduzir medições (baseline e modular)
+        run: ./reproducao/reproduzir.sh
+
+      - name: Publicar resultados como artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reproducao-tcc
+          path: |
+            reproducao/resultados
+            reproducao/ambiente.txt
+
+      - name: Escrever resumo da execução
+        if: always()
+        run: |
+          {
+            echo "# Reprodução do TCC"
+            echo
+            if [ -z "$(git status --porcelain -- reproducao/resultados)" ]; then
+              echo "✅ Resultados idênticos aos versionados no commit \`${GITHUB_SHA::7}\`."
+            else
+              echo "❌ Resultados diferentes dos versionados. Veja o passo \"Comparar com os resultados versionados\"."
+            fi
+            echo
+            echo "Ambiente: $(java -version 2>&1 | head -1), $(uname -sm)."
+            echo
+            cat reproducao/resultados/RESUMO.md 2>/dev/null || echo "RESUMO.md não foi gerado."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comparar com os resultados versionados
+        run: |
+          changes="$(git status --porcelain -- reproducao/resultados)"
+          if [ -n "$changes" ]; then
+            echo "Resultados diferentes dos versionados:"
+            echo "$changes"
+            git diff -- reproducao/resultados
+            exit 1
+          fi
+          echo "Resultados idênticos aos versionados."

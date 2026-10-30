@@ -1,0 +1,47 @@
+# Ambiente da última execução de reproducao/reproduzir.sh
+
+## Sistema operacional
+Darwin MacBook-Air-de-Enrico.local 25.6.0 Darwin Kernel Version 25.6.0: Fri Jul 31 19:17:12 PDT 2026; root:xnu-12377.161.14~5/RELEASE_ARM64_T8103 arm64
+ProductName:		macOS
+ProductVersion:		26.6.2
+BuildVersion:		25G83
+
+## Java
+java version "21.0.12.1" 2026-08-18 LTS
+Java(TM) SE Runtime Environment (build 21.0.12.1+1-LTS-4)
+Java HotSpot(TM) 64-Bit Server VM (build 21.0.12.1+1-LTS-4, mixed mode, sharing)
+
+## Gradle
+------------------------------------------------------------
+Gradle 9.5.1
+------------------------------------------------------------
+Build time:    2026-05-12 13:19:42 UTC
+Revision:      fd78213f09782e62ca4957f9cfd3d90c6c3f1767
+Kotlin:        2.3.20
+Groovy:        4.0.29
+Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+Launcher JVM:  21.0.12.1 (Oracle Corporation 21.0.12.1+1-LTS-4)
+Daemon JVM:    /Library/Java/JavaVirtualMachines/jdk-21.jdk/Contents/Home (no Daemon JVM specified, using current Java home)
+OS:            Mac OS X 26.6.2 aarch64
+
+## Git e Docker
+git version 2.54.0 (Apple Git-157)
+Docker version 29.9.1, build dfc520d
+
+## Commits medidos
+modular:  006d83e6eb57224f695bad88b0c5bf33f9a287ed (refatoracao-modular)
+baseline: acd6c2bdb27aee9358bfed046fe772e3949b94aa (Spring Modulith ajustado para 2.1.1 no worktree)
+
+## Dependências resolvidas (versão modular, testRuntimeClasspath)
+com.tngtech.archunit:archunit:1.4.2
+org.hibernate.orm:hibernate-core:7.4.1.Final
+org.junit.jupiter:junit-jupiter-api:5.13.4 -> 6.0.3
+org.junit.jupiter:junit-jupiter-api:6.0.3
+org.springframework.boot:spring-boot:4.1.0
+org.springframework.boot:spring-boot:4.1.1 -> 4.1.0
+org.springframework.modulith:spring-modulith-core:2.1.1
+org.springframework:spring-core:7.0.8
+org.springframework:spring-core:7.0.9 -> 7.0.8
+
+## Dependência do instrumento de métricas (metricsRuntimeClasspath)
+com.tngtech.archunit:archunit:1.4.2

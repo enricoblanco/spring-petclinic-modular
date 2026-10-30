@@ -1,0 +1,118 @@
+==============================================================================
+Indicadores de encapsulamento (ArchUnit) - modular
+Classes dir: <modular>/build/classes/java/main
+Tipos de topo analisados: 33 (6 modulos)
+==============================================================================
+
+Modulo: app
+------------------------------------------------------------------------------
+  Tipos:                 2 public de 2  [PetClinicApplication, PetClinicRuntimeHints]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          0 public de 0  []
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    1  [PetClinicRuntimeHints]
+
+Modulo: model
+------------------------------------------------------------------------------
+  Tipos:                 3 public de 3  [BaseEntity, NamedEntity, Person]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          0 public de 0  []
+  Ca (classes de fora):  8  [app.PetClinicRuntimeHints, owner.Owner, owner.OwnerService, owner.Pet, owner.PetType, vet.Specialty, vet.Vet, visit.Visit]
+  Ce (classes daqui):    0  []
+
+Modulo: owner
+------------------------------------------------------------------------------
+  Tipos:                 3 public de 13  [OwnerExternalAPI, PetDetails, PetRegisteredEvent]
+  @Entity:               0 public de 3  [Owner, Pet, PetType]
+  Repositorios:          0 public de 2  [OwnerRepository, PetTypeRepository]
+  Beans Spring:          0 public de 6  [OwnerController, OwnerRepository, OwnerService, PetController, PetTypeFormatter, PetTypeRepository]
+  Ca (classes de fora):  3  [visit.OwnerPageVisitsAdvice, visit.PetRegistrationListener, visit.VisitController]
+  Ce (classes daqui):    4  [Owner, OwnerService, Pet, PetType]
+
+Modulo: system
+------------------------------------------------------------------------------
+  Tipos:                 1 public de 4  [WebConfiguration]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          1 public de 4  [CacheConfiguration, CrashController, WebConfiguration, WelcomeController]
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    0  []
+
+Modulo: vet
+------------------------------------------------------------------------------
+  Tipos:                 0 public de 5  []
+  @Entity:               0 public de 2  [Specialty, Vet]
+  Repositorios:          0 public de 1  [VetRepository]
+  Beans Spring:          0 public de 2  [VetController, VetRepository]
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    2  [Specialty, Vet]
+
+Modulo: visit
+------------------------------------------------------------------------------
+  Tipos:                 0 public de 6  []
+  @Entity:               0 public de 1  [Visit]
+  Repositorios:          0 public de 1  [VisitRepository]
+  Beans Spring:          0 public de 4  [OwnerPageVisitsAdvice, PetRegistrationListener, VisitController, VisitRepository]
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    4  [OwnerPageVisitsAdvice, PetRegistrationListener, Visit, VisitController]
+
+Dependencias entre modulos (pares classe -> classe distintos): 13
+------------------------------------------------------------------------------
+  app.PetClinicRuntimeHints -> model.BaseEntity
+  app.PetClinicRuntimeHints -> model.Person
+  owner.Owner -> model.Person
+  owner.OwnerService -> model.BaseEntity
+  owner.Pet -> model.NamedEntity
+  owner.PetType -> model.NamedEntity
+  vet.Specialty -> model.NamedEntity
+  vet.Vet -> model.NamedEntity
+  vet.Vet -> model.Person
+  visit.OwnerPageVisitsAdvice -> owner.OwnerExternalAPI
+  visit.PetRegistrationListener -> owner.PetRegisteredEvent
+  visit.Visit -> model.BaseEntity
+  visit.VisitController -> owner.OwnerExternalAPI
+
+Dependencias entre modulos que atingem tipos de implementacao: 0
+------------------------------------------------------------------------------
+  (nenhum)
+
+Classes fora do modulo visit que dependem de Visit/VisitRepository: 0
+------------------------------------------------------------------------------
+  (nenhum)
+
+Ciclos entre modulos (ArchUnit slices): 0
+------------------------------------------------------------------------------
+  (nenhum)
+
+Indicadores - modular
+| Indicador | Valor |
+|---|---|
+| Tipos public / total | 9 / 33 (27.3%) |
+| @Entity public / total | 0 / 6 |
+| Repositorios public / total | 0 / 4 |
+| Beans Spring public / total | 1 / 16 |
+| Dependencias classe->classe entre modulos | 13 |
+| ...que atingem tipos de implementacao | 0 |
+| Classes fora de visit dependentes de Visit/VisitRepository | 0 |
+| Ciclos entre modulos | 0 |
+
+| Modulo | Tipos | Public | @Entity public | Repos public | Beans public | Ca (classes) | Ce (classes) |
+|---|---|---|---|---|---|---|---|
+| app | 2 | 2 | 0/0 | 0/0 | 0/0 | 0 | 1 |
+| model | 3 | 3 | 0/0 | 0/0 | 0/0 | 8 | 0 |
+| owner | 13 | 3 | 0/3 | 0/2 | 0/6 | 3 | 4 |
+| system | 4 | 1 | 0/0 | 0/0 | 1/4 | 0 | 0 |
+| vet | 5 | 0 | 0/2 | 0/1 | 0/2 | 0 | 2 |
+| visit | 6 | 0 | 0/1 | 0/1 | 0/4 | 0 | 4 |
+
+indicador,valor,total
+tipos_public,9,33
+entity_public,0,6
+repositorios_public,0,4
+beans_public,1,16
+deps_entre_modulos,13,
+deps_em_implementacao,0,
+dependentes_de_visit_fora_de_visit,0,
+ciclos_entre_modulos,0,

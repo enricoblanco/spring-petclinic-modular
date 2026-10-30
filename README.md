@@ -1,22 +1,139 @@
-## Reprodução do TCC
+# TCC: monólito tradicional × monólito modular (Spring PetClinic)
 
 [![Reprodução do TCC](https://github.com/enricoblanco/spring-petclinic-modular/actions/workflows/reproducao.yml/badge.svg?branch=refatoracao-modular)](https://github.com/enricoblanco/spring-petclinic-modular/actions/workflows/reproducao.yml)
 
-Este repositório contém o código e as medições do TCC *Análise de manutenibilidade em arquiteturas de software: um estudo comparativo entre monólito tradicional e monólito modular no ecossistema Java* (UNISINOS, 2026).
+Código e medições do TCC *Análise de manutenibilidade em arquiteturas de software: um estudo comparativo entre monólito tradicional e monólito modular no ecossistema Java* (Enrico Cidade Blanco, orientação do Prof. Dr. Elvandi da Silva Júnior, UNISINOS, 2026).
 
-- Versão final do estudo: tag [`tcc-final`](https://github.com/enricoblanco/spring-petclinic-modular/tree/tcc-final)
-- Resultados reproduzidos (testes, encapsulamento e métricas de Martin, baseline × modular): [`reproducao/resultados/RESUMO.md`](reproducao/resultados/RESUMO.md)
-- Detalhes do pacote de reprodução: [`reproducao/README.md`](reproducao/README.md)
+O estudo compara duas versões do Spring PetClinic:
 
-Para reproduzir (JDK 21, Docker, Python 3):
+| Versão | Onde está | O que é |
+|---|---|---|
+| Baseline (monólito tradicional) | branch `main`, commit `acd6c2b` | código original + instrumentação de medição |
+| Modular (monólito modular) | branch `refatoracao-modular`, tag [`tcc-final`](https://github.com/enricoblanco/spring-petclinic-modular/tree/tcc-final) | refatoração com Spring Modulith: módulos `owner`, `vet`, `visit`, `system` e `model` |
+
+Os resultados já gerados estão em [`reproducao/resultados/RESUMO.md`](reproducao/resultados/RESUMO.md). A cada push na `refatoracao-modular`, o workflow [Reprodução do TCC](https://github.com/enricoblanco/spring-petclinic-modular/actions/workflows/reproducao.yml) refaz todas as medições em uma máquina limpa e confere se os números são os mesmos. Abra a última execução e veja a aba **Summary**.
+
+## 1. Pré-requisitos
+
+| Ferramenta | Versão | Para quê |
+|---|---|---|
+| JDK | 21 | compilar e rodar o projeto (o Gradle vem junto, via `./gradlew`) |
+| Docker | qualquer versão recente, **em execução** | testes de integração com MySQL e PostgreSQL (Testcontainers) |
+| Git | 2.x | clonar e criar o worktree da baseline |
+| Python | 3.x | montar os arquivos de resultado |
+
+Confira com `java -version`, `docker info`, `git --version` e `python3 --version`. A primeira execução baixa as dependências do Gradle e as imagens do MySQL e do PostgreSQL, então precisa de internet.
+
+## 2. Reproduzir tudo com um comando
 
 ```bash
 git clone https://github.com/enricoblanco/spring-petclinic-modular.git
 cd spring-petclinic-modular
 git checkout tcc-final
 ./reproducao/reproduzir.sh
-git status --porcelain reproducao/resultados   # vazio = resultados idênticos aos do artigo
 ```
+
+O script leva alguns minutos e faz, em ordem:
+
+1. cria um worktree temporário da baseline (`acd6c2b`) e roda a suíte de testes dela;
+2. roda a suíte de testes da versão modular;
+3. gera as métricas de Martin e os indicadores de encapsulamento das duas versões;
+4. grava tudo em `reproducao/resultados/` e o ambiente usado em `reproducao/ambiente.txt`;
+5. remove o worktree temporário.
+
+Para conferir se os números são iguais aos do artigo:
+
+```bash
+git status --porcelain reproducao/resultados
+```
+
+Se não aparecer nada, os resultados são idênticos aos versionados. Se aparecer algum arquivo, `git diff reproducao/resultados` mostra o que mudou.
+
+### Onde está cada resultado
+
+| Arquivo | Conteúdo | No artigo |
+|---|---|---|
+| `reproducao/resultados/RESUMO.md` | as três tabelas abaixo, lado a lado | — |
+| `reproducao/resultados/<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
+| `reproducao/resultados/<versão>/encapsulamento.{csv,md,txt}` | tipos, entidades, repositórios e beans públicos; dependências entre módulos; ciclos | Tabela 2 |
+| `reproducao/resultados/<versão>/martin-metrics.{csv,md,txt}` | Nc, Na, Ca, Ce, I, A e D por pacote | Tabela 3 |
+| `reproducao/ambiente.txt` | SO, JDK, Gradle e versões das dependências | Quadro 2 |
+
+`<versão>` é `baseline` ou `modular`. Os arquivos `.txt` trazem os detalhes que justificam cada número, como a lista de classes de cada pacote e cada dependência entre módulos.
+
+## 3. Rodar cada medição separadamente
+
+Todos os comandos abaixo rodam na raiz do repositório, com a tag `tcc-final` (ou a branch `refatoracao-modular`) em checkout.
+
+```bash
+# Testes da versão modular (inclui o ModularityTests, que roda o verify() do Spring Modulith)
+./gradlew test
+
+# Só a verificação de modularidade do Spring Modulith (Tabela 4)
+./gradlew test --tests '*ModularityTests'
+
+# Métricas de Martin (Tabela 3) -> build/reports/martin-metrics/
+./gradlew jdependReport
+
+# Indicadores de encapsulamento (Tabela 2) -> build/reports/encapsulation/
+./gradlew encapsulationReport
+```
+
+Para medir a **baseline** com os mesmos instrumentos, compile-a num worktree e aponte os relatórios para as classes dela:
+
+```bash
+git worktree add /tmp/baseline acd6c2b
+(cd /tmp/baseline && ./gradlew classes)
+./gradlew jdependReport encapsulationReport -PclassesDir=/tmp/baseline/build/classes/java/main -Plabel=baseline
+git worktree remove --force /tmp/baseline
+```
+
+Os relatórios saem com o sufixo `-baseline` nas mesmas pastas. Os instrumentos ficam em `src/metrics/java/.../metrics/` (`MartinMetricsReport` e `EncapsulationReport`).
+
+## 4. SonarQube (opcional, fora da reprodução automática)
+
+As Tabelas 5 e 6 do artigo vêm do SonarQube Community Build, que precisa de um servidor. Para repetir:
+
+```bash
+docker run -d --name sonarqube -p 9000:9000 sonarqube:community
+```
+
+1. Abra http://localhost:9000, entre com `admin`/`admin` e troque a senha.
+2. Crie um projeto local com a chave `spring-petclinic-modular` e gere um token de análise.
+3. Rode a análise. O token é lido da variável de ambiente e nunca fica em arquivo:
+
+```bash
+SONAR_TOKEN=<seu-token> ./gradlew sonar
+```
+
+As métricas aparecem no painel do projeto (aba *Measures*). Para a baseline, faça o checkout de `acd6c2b`. O `build.gradle` desse commit traz um token antigo escrito no arquivo, que não deve ser usado: troque o valor de `sonar.token` pelo seu token.
+
+## 5. Cenários de mudança (Tabela 7)
+
+Os dois cenários foram implementados nas duas versões, cada um em uma branch:
+
+| Cenário | Baseline | Modular |
+|---|---|---|
+| C1: página do dono mostra só as 5 visitas mais recentes | `cenario-c1-main` | `cenario-c1-modular` |
+| C2: veterinário responsável pela visita | `cenario-c2-main` | `cenario-c2-modular` |
+
+O custo de cada implementação é o diff em relação à sua base:
+
+```bash
+git fetch origin 'refs/heads/cenario-*:refs/heads/cenario-*'
+git diff --stat acd6c2b cenario-c1-main
+git diff --stat 49d9597 cenario-c1-modular
+git diff --stat acd6c2b cenario-c2-main
+git diff --stat 49d9597 cenario-c2-modular
+```
+
+O commit `49d9597` é a versão modular usada como base dos cenários. Ela tem o mesmo código de produção da tag `tcc-final`.
+
+## 6. Observações
+
+- **Versões:** Spring Boot 4.1.0, Spring Framework 7.0.8, Spring Modulith 2.1.1, ArchUnit 1.4.2, Hibernate ORM 7.4.1 e JUnit Jupiter 6.0.3. As versões efetivas da última execução ficam em `reproducao/ambiente.txt`.
+- **Baseline e Spring Modulith:** o commit da baseline declara o Spring Modulith 1.2.0, feito para o Spring Boot 3.3. O script troca para 2.1.1 só no worktree temporário, sem alterar o código da aplicação nem commitar nada na `main`.
+- **Por que ArchUnit e não JDepend:** o JDepend 2.9.1 não lê bytecode do Java 21 e descarta classes com lambdas, referências a métodos e records. A task se chama `jdependReport` por histórico, mas usa o ArchUnit.
 
 ---
 

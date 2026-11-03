@@ -92,4 +92,28 @@ class VisitRepositoryTests {
 					LocalDate.now().minusDays(4), LocalDate.now().minusDays(5));
 	}
 
+	@Test
+	@Transactional
+	void shouldBreakDateTiesByNewestVisitFirst() {
+		for (int i = 1; i <= 6; i++) {
+			Visit visit = new Visit();
+			visit.setPetId(7);
+			visit.setDate(LocalDate.now());
+			visit.setDescription("same day " + i);
+			this.visits.save(visit);
+		}
+
+		List<Visit> recent = this.visits.findTop5ByPetIdOrderByDateDescIdDesc(7);
+
+		assertThat(recent).extracting(Visit::getDescription)
+			.containsExactly("same day 6", "same day 5", "same day 4", "same day 3", "same day 2");
+	}
+
+	@Test
+	void shouldFindNoRecentVisitsForPetWithoutVisits() {
+		List<Visit> recent = this.visits.findTop5ByPetIdOrderByDateDescIdDesc(1);
+
+		assertThat(recent).isEmpty();
+	}
+
 }

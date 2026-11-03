@@ -35,7 +35,7 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 	 * @param pageable how many visits to return
 	 * @return the most recent visits of the pet
 	 */
-	@Query("SELECT v FROM Pet p JOIN p.visits v WHERE p.id = :petId ORDER BY v.date DESC")
+	@Query("SELECT v FROM Pet p JOIN p.visits v WHERE p.id = :petId ORDER BY v.date DESC, v.id DESC")
 	@Transactional(readOnly = true)
 	List<Visit> findRecentByPetId(@Param("petId") Integer petId, Pageable pageable);
 

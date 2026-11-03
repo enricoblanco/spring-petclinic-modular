@@ -98,7 +98,7 @@ class VisitControllerTests {
 		previous.setPetId(TEST_PET_ID);
 		previous.setDate(LocalDate.of(2013, 1, 1));
 		previous.setDescription("rabies shot");
-		given(this.visits.findByPetId(TEST_PET_ID)).willReturn(List.of(previous));
+		given(this.visits.findByPetIdOrderByDateAsc(TEST_PET_ID)).willReturn(List.of(previous));
 
 		MvcResult result = mockMvc
 			.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
@@ -123,7 +123,7 @@ class VisitControllerTests {
 		assertThatThrownBy(
 				() -> mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, 99)))
 			.hasCauseInstanceOf(IllegalArgumentException.class);
-		verify(this.visits, never()).findByPetId(99);
+		verify(this.visits, never()).findByPetIdOrderByDateAsc(99);
 	}
 
 	@Test

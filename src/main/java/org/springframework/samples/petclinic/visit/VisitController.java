@@ -39,7 +39,7 @@ class VisitController {
 								  Map<String, Object> model) {
 		PetDetails pet = this.ownerApi.findPetDetails(ownerId, petId);
 		model.put("pet", pet);
-		model.put("visits", this.visits.findByPetId(petId));
+		model.put("visits", this.visits.findByPetIdOrderByDateAsc(petId));
 		return new VisitForm();
 	}
 

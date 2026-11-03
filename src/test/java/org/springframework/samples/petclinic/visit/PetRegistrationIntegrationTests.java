@@ -44,7 +44,7 @@ class PetRegistrationIntegrationTests {
 			.andExpect(status().is3xxRedirection());
 
 		Integer petId = jdbc.queryForObject("SELECT id FROM pets WHERE name = ?", Integer.class, name);
-		List<Visit> petVisits = visits.findByPetId(petId);
+		List<Visit> petVisits = visits.findByPetIdOrderByDateAsc(petId);
 		assertThat(petVisits).singleElement()
 			.extracting(Visit::getDescription)
 			.isEqualTo(PetRegistrationListener.INITIAL_VISIT_DESCRIPTION);

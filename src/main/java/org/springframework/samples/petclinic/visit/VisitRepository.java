@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 interface VisitRepository extends JpaRepository<Visit, Integer> {
 
 	@Transactional(readOnly = true)
-	List<Visit> findByPetId(Integer petId);
+	List<Visit> findByPetIdOrderByDateAsc(Integer petId);
 
 }

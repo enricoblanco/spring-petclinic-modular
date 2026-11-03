@@ -42,7 +42,7 @@ class VisitRepositoryTests {
 
 	@Test
 	void shouldFindVisitsByPetId() {
-		List<Visit> petVisits = this.visits.findByPetId(7);
+		List<Visit> petVisits = this.visits.findByPetIdOrderByDateAsc(7);
 
 		assertThat(petVisits)
 			.hasSize(2)
@@ -54,7 +54,7 @@ class VisitRepositoryTests {
 	@Test
 	@Transactional
 	void shouldAddNewVisitForPet() {
-		int initialSize = this.visits.findByPetId(7).size();
+		int initialSize = this.visits.findByPetIdOrderByDateAsc(7).size();
 
 		Visit visit = new Visit();
 		visit.setPetId(7);
@@ -63,7 +63,7 @@ class VisitRepositoryTests {
 
 		this.visits.save(visit);
 
-		List<Visit> updatedVisits = this.visits.findByPetId(7);
+		List<Visit> updatedVisits = this.visits.findByPetIdOrderByDateAsc(7);
 		assertThat(updatedVisits)
 			.hasSize(initialSize + 1)
 			.last()

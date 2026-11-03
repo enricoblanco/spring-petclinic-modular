@@ -44,8 +44,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Test class for the {@link VetController}
  */
 
-@WebMvcTest(controllers = VetController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
-		pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
+@WebMvcTest(controllers = VetController.class,
+		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+				pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
 @DisabledInNativeImage
 @DisabledInAotMode
 class VetControllerTests {

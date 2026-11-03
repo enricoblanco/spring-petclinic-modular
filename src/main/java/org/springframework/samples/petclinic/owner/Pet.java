@@ -36,7 +36,7 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "pets")
- class Pet extends NamedEntity {
+class Pet extends NamedEntity {
 
 	@Column(name = "birth_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")

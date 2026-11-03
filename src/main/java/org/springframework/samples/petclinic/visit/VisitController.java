@@ -36,7 +36,7 @@ class VisitController {
 
 	@ModelAttribute("visit")
 	public VisitForm loadPetWithVisit(@PathVariable("ownerId") int ownerId, @PathVariable("petId") int petId,
-								  Map<String, Object> model) {
+			Map<String, Object> model) {
 		PetDetails pet = this.ownerApi.findPetDetails(ownerId, petId);
 		model.put("pet", pet);
 		model.put("visits", this.visits.findByPetIdOrderByDateAsc(petId));
@@ -55,7 +55,7 @@ class VisitController {
 
 	@PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
 	public String processNewVisitForm(@PathVariable int petId, @Valid @ModelAttribute("visit") VisitForm visit,
-									  BindingResult result, RedirectAttributes redirectAttributes) {
+			BindingResult result, RedirectAttributes redirectAttributes) {
 		if (visit.getDate() != null && !visit.getDate().isAfter(LocalDate.now())) {
 			result.rejectValue("date", "typeMismatch.visitDate");
 		}

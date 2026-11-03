@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 /**
- * Contribui as visitas de cada Pet para as páginas do módulo Owner, sem que o Owner dependa do módulo Visit.
+ * Contribui as visitas de cada Pet para as páginas do módulo Owner, sem que o Owner
+ * dependa do módulo Visit.
  */
 // package referenced by name to keep the dependency one-way (visit -> owner)
 @ControllerAdvice(basePackages = "org.springframework.samples.petclinic.owner")

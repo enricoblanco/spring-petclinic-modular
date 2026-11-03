@@ -11,4 +11,5 @@ class ModularityTests {
 		modules.forEach(System.out::println);
 		modules.verify();
 	}
+
 }

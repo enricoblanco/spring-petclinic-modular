@@ -28,24 +28,18 @@ class OwnerService implements OwnerExternalAPI {
 	public PetDetails findPetDetails(int ownerId, int petId) {
 		Owner owner = this.owners.findById(ownerId)
 			.orElseThrow(() -> new IllegalArgumentException(
-				"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
+					"Owner not found with id: " + ownerId + ". Please ensure the ID is correct "));
 
 		Pet pet = owner.getPet(petId);
 		if (pet == null) {
 			throw new IllegalArgumentException(
-				"Pet with id " + petId + " not found for owner with id " + ownerId + ".");
+					"Pet with id " + petId + " not found for owner with id " + ownerId + ".");
 		}
 
 		String typeName = (pet.getType() != null) ? pet.getType().getName() : "";
 
-		return new PetDetails(
-			pet.getId(),
-			pet.getName(),
-			pet.getBirthDate(),
-			typeName,
-			owner.getFirstName(),
-			owner.getLastName()
-		);
+		return new PetDetails(pet.getId(), pet.getName(), pet.getBirthDate(), typeName, owner.getFirstName(),
+				owner.getLastName());
 	}
 
 }

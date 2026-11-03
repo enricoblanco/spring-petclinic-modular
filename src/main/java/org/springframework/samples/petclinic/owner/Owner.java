@@ -46,7 +46,7 @@ import jakarta.validation.constraints.Size;
  */
 @Entity
 @Table(name = "owners")
- class Owner extends Person {
+class Owner extends Person {
 
 	@Column
 	@NotBlank

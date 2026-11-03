@@ -221,4 +221,32 @@ class VisitControllerTests {
 		verify(this.visits, never()).save(any(Visit.class));
 	}
 
+	@Test
+	void processNewVisitFormHasErrorsWhenVetIdIsInvalid() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("date", LocalDate.now().plusDays(1).toString())
+				.param("description", "Visit Description")
+				.param("vetId", "abc"))
+			.andExpect(model().attributeHasFieldErrors("visit", "vetId"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
+	}
+
+	@Test
+	void processNewVisitFormHasErrorsWhenVetDoesNotExist() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("date", LocalDate.now().plusDays(1).toString())
+				.param("description", "Visit Description")
+				.param("vetId", "99"))
+			.andExpect(model().attributeHasFieldErrors("visit", "vetId"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.visits, never()).save(any(Visit.class));
+	}
+
 }

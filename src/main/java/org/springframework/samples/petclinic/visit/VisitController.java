@@ -72,7 +72,7 @@ class VisitController {
 		}
 		if (visit.getVetId() != null
 				&& this.vetApi.findAllVets().stream().noneMatch(vet -> vet.id().equals(visit.getVetId()))) {
-			result.rejectValue("vetId", "typeMismatch");
+			result.rejectValue("vetId", "typeMismatch", "vet not found");
 		}
 
 		if (result.hasErrors()) {

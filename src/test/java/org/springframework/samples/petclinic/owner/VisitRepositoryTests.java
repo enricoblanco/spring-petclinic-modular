@@ -45,4 +45,29 @@ class VisitRepositoryTests {
 					LocalDate.now().minusDays(4), LocalDate.now().minusDays(5));
 	}
 
+	@Test
+	void shouldBreakDateTiesByNewestVisitFirst() {
+		Owner owner = this.owners.findById(6).orElseThrow();
+		Pet samantha = owner.getPet(7);
+		for (int i = 1; i <= 6; i++) {
+			Visit visit = new Visit();
+			visit.setDate(LocalDate.now());
+			visit.setDescription("same day " + i);
+			samantha.addVisit(visit);
+		}
+		this.owners.saveAndFlush(owner);
+
+		List<Visit> recent = this.visits.findRecentByPetId(7, PageRequest.of(0, 5));
+
+		assertThat(recent).extracting(Visit::getDescription)
+			.containsExactly("same day 6", "same day 5", "same day 4", "same day 3", "same day 2");
+	}
+
+	@Test
+	void shouldFindNoRecentVisitsForPetWithoutVisits() {
+		List<Visit> recent = this.visits.findRecentByPetId(1, PageRequest.of(0, 5));
+
+		assertThat(recent).isEmpty();
+	}
+
 }

@@ -2,7 +2,6 @@ package org.springframework.samples.petclinic.owner;
 
 import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,24 +10,8 @@ class OwnerService implements OwnerExternalAPI {
 
 	private final OwnerRepository owners;
 
-	private final ApplicationEventPublisher events;
-
-	OwnerService(OwnerRepository owners, ApplicationEventPublisher events) {
+	OwnerService(OwnerRepository owners) {
 		this.owners = owners;
-		this.events = events;
-	}
-
-	/**
-	 * Adds the pet to the owner, saves it and publishes a {@link PetRegisteredEvent}.
-	 */
-	@Transactional
-	void registerPet(Owner owner, Pet pet) {
-		owner.addPet(pet);
-		// saveAndFlush merges the owner: only the returned copy carries the generated pet id
-		Owner saved = this.owners.saveAndFlush(owner);
-		Pet savedPet = saved.getPet(pet.getName());
-		Integer petId = (savedPet != null) ? savedPet.getId() : pet.getId();
-		this.events.publishEvent(new PetRegisteredEvent(petId, saved.getId()));
 	}
 
 	@Override

@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 /**
- * Form backing object for booking a visit, so request parameters are never bound straight onto the {@link Visit}
- * entity.
+ * Form backing object for booking a visit, so request parameters are never bound straight
+ * onto the {@link Visit} entity.
  */
 class VisitForm {
 

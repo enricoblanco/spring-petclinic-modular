@@ -55,8 +55,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @author Wick Dynex
  */
 // visit module contributes a @ControllerAdvice to owner pages; keep it out of this slice
-@WebMvcTest(controllers = OwnerController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
-		pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
+@WebMvcTest(controllers = OwnerController.class,
+		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+				pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
 @DisabledInNativeImage
 @DisabledInAotMode
 class OwnerControllerTests {
@@ -235,7 +236,8 @@ class OwnerControllerTests {
 			.andExpect(view().name("owners/createOrUpdateOwnerForm"))
 			.andReturn();
 
-		// Owner is package-private, so Hamcrest's reflective hasProperty() can't call its getters
+		// Owner is package-private, so Hamcrest's reflective hasProperty() can't call its
+		// getters
 		Owner owner = (Owner) result.getModelAndView().getModel().get("owner");
 		assertThat(owner.getLastName()).isEqualTo("Franklin");
 		assertThat(owner.getFirstName()).isEqualTo("George");

@@ -52,7 +52,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = PetController.class,
 		includeFilters = @ComponentScan.Filter(value = PetTypeFormatter.class, type = FilterType.ASSIGNABLE_TYPE),
 		excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
-			pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
+				pattern = "org\\.springframework\\.samples\\.petclinic\\.visit\\..*"))
 @Import(OwnerService.class)
 @DisabledInNativeImage
 @DisabledInAotMode

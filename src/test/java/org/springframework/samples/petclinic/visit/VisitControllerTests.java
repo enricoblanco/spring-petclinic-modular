@@ -74,14 +74,7 @@ class VisitControllerTests {
 
 	@BeforeEach
 	void init() {
-		this.petDetails = new PetDetails(
-			TEST_PET_ID,
-			"Max",
-			LocalDate.now(),
-			"dog",
-			"George",
-			"Franklin"
-		);
+		this.petDetails = new PetDetails(TEST_PET_ID, "Max", LocalDate.now(), "dog", "George", "Franklin");
 		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, TEST_PET_ID)).willReturn(this.petDetails);
 	}
 
@@ -100,8 +93,7 @@ class VisitControllerTests {
 		previous.setDescription("rabies shot");
 		given(this.visits.findByPetIdOrderByDateAsc(TEST_PET_ID)).willReturn(List.of(previous));
 
-		MvcResult result = mockMvc
-			.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
+		MvcResult result = mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID))
 			.andExpect(status().isOk())
 			.andReturn();
 
@@ -120,8 +112,7 @@ class VisitControllerTests {
 		given(this.ownerApi.findPetDetails(TEST_OWNER_ID, 99))
 			.willThrow(new IllegalArgumentException("Pet with id 99 not found for owner with id 1."));
 
-		assertThatThrownBy(
-				() -> mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, 99)))
+		assertThatThrownBy(() -> mockMvc.perform(get("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, 99)))
 			.hasCauseInstanceOf(IllegalArgumentException.class);
 		verify(this.visits, never()).findByPetIdOrderByDateAsc(99);
 	}
@@ -130,8 +121,7 @@ class VisitControllerTests {
 	void processNewVisitFormSavesVisitForPetAndIgnoresId() throws Exception {
 		LocalDate date = LocalDate.now().plusDays(3);
 		mockMvc
-			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
-				.param("id", "99")
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID).param("id", "99")
 				.param("date", date.toString())
 				.param("description", "Vaccination"))
 			.andExpect(status().is3xxRedirection())
@@ -162,7 +152,7 @@ class VisitControllerTests {
 	void processNewVisitFormHasErrors() throws Exception {
 		mockMvc
 			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID).param("name",
-				"George"))
+					"George"))
 			.andExpect(model().attributeHasErrors("visit"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));

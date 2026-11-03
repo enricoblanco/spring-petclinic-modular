@@ -53,7 +53,8 @@ class PetRegistrationIntegrationTests {
 		mockMvc.perform(get("/owners/{ownerId}", 1))
 			.andExpect(status().isOk())
 			.andExpect(content().string(org.hamcrest.Matchers.containsString(name)))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString(PetRegistrationListener.INITIAL_VISIT_DESCRIPTION)));
+			.andExpect(content()
+				.string(org.hamcrest.Matchers.containsString(PetRegistrationListener.INITIAL_VISIT_DESCRIPTION)));
 	}
 
 }

@@ -44,11 +44,7 @@ class VisitRepositoryTests {
 	void shouldFindVisitsByPetId() {
 		List<Visit> petVisits = this.visits.findByPetIdOrderByDateAsc(7);
 
-		assertThat(petVisits)
-			.hasSize(2)
-			.element(0)
-			.extracting(Visit::getDate)
-			.isNotNull();
+		assertThat(petVisits).hasSize(2).element(0).extracting(Visit::getDate).isNotNull();
 	}
 
 	@Test
@@ -64,13 +60,10 @@ class VisitRepositoryTests {
 		this.visits.save(visit);
 
 		List<Visit> updatedVisits = this.visits.findByPetIdOrderByDateAsc(7);
-		assertThat(updatedVisits)
-			.hasSize(initialSize + 1)
-			.last()
-			.satisfies(v -> {
-				assertThat(v.getId()).isNotNull();
-				assertThat(v.getDescription()).isEqualTo("New medical checkup");
-			});
+		assertThat(updatedVisits).hasSize(initialSize + 1).last().satisfies(v -> {
+			assertThat(v.getId()).isNotNull();
+			assertThat(v.getDescription()).isEqualTo("New medical checkup");
+		});
 	}
 
 }

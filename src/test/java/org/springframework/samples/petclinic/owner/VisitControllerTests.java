@@ -16,7 +16,10 @@
 
 package org.springframework.samples.petclinic.owner;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -143,6 +146,22 @@ class VisitControllerTests {
 			.andExpect(model().attributeHasFieldErrors("visit", "vet"))
 			.andExpect(status().isOk())
 			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.owners, never()).save(any(Owner.class));
+	}
+
+	@Test
+	void processNewVisitFormHasErrorsWhenVetDoesNotExist() throws Exception {
+		mockMvc
+			.perform(post("/owners/{ownerId}/pets/{petId}/visits/new", TEST_OWNER_ID, TEST_PET_ID)
+				.param("date", LocalDate.now().plusDays(1).toString())
+				.param("description", "Visit Description")
+				.param("vet", "Nobody Known"))
+			.andExpect(model().attributeHasFieldErrors("visit", "vet"))
+			.andExpect(status().isOk())
+			.andExpect(view().name("pets/createOrUpdateVisitForm"));
+
+		verify(this.owners, never()).save(any(Owner.class));
 	}
 
 }

@@ -1,0 +1,6 @@
+status,arquivo,linhas_codigo_inseridas,linhas_codigo_removidas,contexto
+M,src/main/java/org/springframework/samples/petclinic/owner/OwnerController.java,12,1,outro
+A,src/main/java/org/springframework/samples/petclinic/owner/VisitRepository.java,12,0,visita
+M,src/main/resources/templates/owners/ownerDetails.html,1,1,outro
+M,src/test/java/org/springframework/samples/petclinic/owner/OwnerControllerTests.java,2,0,outro
+A,src/test/java/org/springframework/samples/petclinic/owner/VisitRepositoryTests.java,35,0,visita

@@ -33,13 +33,14 @@ git checkout tcc-final
 ./reproducao/reproduzir.sh
 ```
 
-O script leva alguns minutos e faz, em ordem:
+O script leva de 10 a 20 minutos e faz, em ordem:
 
-1. cria um worktree temporário da baseline (`acd6c2b`) e roda a suíte de testes dela;
-2. roda a suíte de testes da versão modular;
-3. gera as métricas de Martin e os indicadores de encapsulamento das duas versões;
-4. grava tudo em `reproducao/resultados/` e o ambiente usado em `reproducao/ambiente.txt`;
-5. remove o worktree temporário.
+1. roda a suíte de testes da versão modular (checkout atual);
+2. cria worktrees temporários da baseline (`acd6c2b`), da variante de controle sem a visita inicial e dos quatro cenários de mudança, e roda a suíte de testes de cada um;
+3. gera as métricas de Martin e os indicadores de encapsulamento de todas essas versões;
+4. calcula pelo `git diff` o esforço da refatoração (Tabela 1) e o custo de cada cenário (Tabela 7);
+5. grava tudo em `reproducao/resultados/` e o ambiente usado em `reproducao/ambiente.txt`;
+6. remove os worktrees temporários.
 
 Para conferir se os números são iguais aos do artigo:
 
@@ -51,15 +52,17 @@ Se não aparecer nada, os resultados são idênticos aos versionados. Se aparece
 
 ### Onde está cada resultado
 
-| Arquivo | Conteúdo | No artigo |
+| Arquivo em `reproducao/resultados/` | Conteúdo | No artigo |
 |---|---|---|
-| `reproducao/resultados/RESUMO.md` | as três tabelas abaixo, lado a lado | — |
-| `reproducao/resultados/<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
-| `reproducao/resultados/<versão>/encapsulamento.{csv,md,txt}` | tipos, entidades, repositórios e beans públicos; dependências entre módulos; ciclos | Tabela 2 |
-| `reproducao/resultados/<versão>/martin-metrics.{csv,md,txt}` | Nc, Na, Ca, Ce, I, A e D por pacote | Tabela 3 |
-| `reproducao/ambiente.txt` | SO, JDK, Gradle e versões das dependências | Quadro 2 |
+| `RESUMO.md` | todas as tabelas abaixo, lado a lado | — |
+| `esforco.csv` | arquivos e linhas alterados da baseline para a versão modular | Tabela 1 |
+| `<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
+| `<versão>/encapsulamento.{csv,md,txt}` | tipos, entidades, repositórios e beans públicos; dependências entre módulos; ciclos | Tabela 2 |
+| `<versão>/martin-metrics.{csv,md,txt}` | Nc, Na, Ca, Ce, I, A e D por pacote | Tabela 3 |
+| `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 7 |
+| `controle-sem-visita-inicial/` | as mesmas medições na variante sem a visita inicial automática | Tabela 8 |
 
-`<versão>` é `baseline` ou `modular`. Os arquivos `.txt` trazem os detalhes que justificam cada número, como a lista de classes de cada pacote e cada dependência entre módulos.
+`<versão>` é `baseline`, `modular` ou `controle-sem-visita-inicial`. O ambiente da execução fica em `reproducao/ambiente.txt` (Quadro 2). Os arquivos `.txt` trazem os detalhes que justificam cada número, como a lista de classes de cada pacote e cada dependência entre módulos.
 
 ## 3. Rodar cada medição separadamente
 
@@ -127,12 +130,13 @@ git diff --stat acd6c2b cenario-c2-main
 git diff --stat 49d9597 cenario-c2-modular
 ```
 
-O commit `49d9597` é a versão modular usada como base dos cenários. Ela tem o mesmo código de produção da tag `tcc-final`.
+O commit `49d9597` é a versão modular usada como base dos cenários. Em relação a ele, a tag `tcc-final` só mudou o nome de uma consulta (`findByPetIdOrderByDateAsc`), para exibir as visitas em ordem crescente de data, como a baseline.
 
 ## 6. Observações
 
 - **Versões:** Spring Boot 4.1.0, Spring Framework 7.0.8, Spring Modulith 2.1.1, ArchUnit 1.4.2, Hibernate ORM 7.4.1 e JUnit Jupiter 6.0.3. As versões efetivas da última execução ficam em `reproducao/ambiente.txt`.
 - **Baseline e Spring Modulith:** o commit da baseline declara o Spring Modulith 1.2.0, feito para o Spring Boot 3.3. O script troca para 2.1.1 só no worktree temporário, sem alterar o código da aplicação nem commitar nada na `main`.
+- **Variante de controle:** a versão modular acrescenta uma funcionalidade (a visita inicial criada automaticamente ao cadastrar um animal). A branch `modular-sem-visita-inicial` é a mesma versão sem essa funcionalidade e serve para medir a influência dela nos resultados (Tabela 8).
 - **Por que ArchUnit e não JDepend:** o JDepend 2.9.1 não lê bytecode do Java 21 e descarta classes com lambdas, referências a métodos e records. A task se chama `jdependReport` por histórico, mas usa o ArchUnit.
 
 ---

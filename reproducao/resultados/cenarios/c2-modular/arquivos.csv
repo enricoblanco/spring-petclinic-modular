@@ -1,0 +1,16 @@
+status,arquivo,linhas_codigo_inseridas,linhas_codigo_removidas,contexto
+A,src/main/java/org/springframework/samples/petclinic/vet/VetExternalAPI.java,5,0,outro
+A,src/main/java/org/springframework/samples/petclinic/vet/VetService.java,17,0,outro
+A,src/main/java/org/springframework/samples/petclinic/vet/VetSummary.java,3,0,outro
+M,src/main/java/org/springframework/samples/petclinic/visit/OwnerPageVisitsAdvice.java,16,1,visita
+M,src/main/java/org/springframework/samples/petclinic/visit/Visit.java,8,0,visita
+M,src/main/java/org/springframework/samples/petclinic/visit/VisitController.java,14,1,visita
+M,src/main/java/org/springframework/samples/petclinic/visit/VisitForm.java,10,0,visita
+M,src/main/resources/db/h2/data.sql,4,4,sql
+M,src/main/resources/db/h2/schema.sql,3,1,sql
+M,src/main/resources/db/mysql/data.sql,4,4,sql
+M,src/main/resources/db/mysql/schema.sql,3,1,sql
+M,src/main/resources/db/postgres/schema.sql,2,1,sql
+M,src/main/resources/templates/owners/ownerDetails.html,2,0,outro
+M,src/main/resources/templates/pets/createOrUpdateVisitForm.html,9,0,visita
+M,src/test/java/org/springframework/samples/petclinic/visit/VisitControllerTests.java,21,2,visita

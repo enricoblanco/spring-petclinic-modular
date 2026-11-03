@@ -1,0 +1,113 @@
+==============================================================================
+Indicadores de encapsulamento (ArchUnit) - c2-baseline
+Classes dir: <c2-baseline>/build/classes/java/main
+Tipos de topo analisados: 26 (5 modulos)
+==============================================================================
+
+Modulo: app
+------------------------------------------------------------------------------
+  Tipos:                 2 public de 2  [PetClinicApplication, PetClinicRuntimeHints]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          0 public de 0  []
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    1  [PetClinicRuntimeHints]
+
+Modulo: model
+------------------------------------------------------------------------------
+  Tipos:                 3 public de 3  [BaseEntity, NamedEntity, Person]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          0 public de 0  []
+  Ca (classes de fora):  7  [app.PetClinicRuntimeHints, owner.Owner, owner.Pet, owner.PetType, owner.Visit, vet.Specialty, vet.Vet]
+  Ce (classes daqui):    0  []
+
+Modulo: owner
+------------------------------------------------------------------------------
+  Tipos:                 8 public de 11  [Owner, OwnerRepository, Pet, PetType, PetTypeFormatter, PetTypeRepository, PetValidator, Visit]
+  @Entity:               4 public de 4  [Owner, Pet, PetType, Visit]
+  Repositorios:          2 public de 2  [OwnerRepository, PetTypeRepository]
+  Beans Spring:          3 public de 6  [OwnerController, OwnerRepository, PetController, PetTypeFormatter, PetTypeRepository, VisitController]
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    5  [Owner, Pet, PetType, Visit, VisitController]
+
+Modulo: system
+------------------------------------------------------------------------------
+  Tipos:                 1 public de 4  [WebConfiguration]
+  @Entity:               0 public de 0  []
+  Repositorios:          0 public de 0  []
+  Beans Spring:          1 public de 4  [CacheConfiguration, CrashController, WebConfiguration, WelcomeController]
+  Ca (classes de fora):  0  []
+  Ce (classes daqui):    0  []
+
+Modulo: vet
+------------------------------------------------------------------------------
+  Tipos:                 5 public de 6  [Specialty, Vet, VetFormatter, VetRepository, Vets]
+  @Entity:               2 public de 2  [Specialty, Vet]
+  Repositorios:          1 public de 1  [VetRepository]
+  Beans Spring:          2 public de 3  [VetController, VetFormatter, VetRepository]
+  Ca (classes de fora):  3  [app.PetClinicRuntimeHints, owner.Visit, owner.VisitController]
+  Ce (classes daqui):    2  [Specialty, Vet]
+
+Dependencias entre modulos (pares classe -> classe distintos): 13
+------------------------------------------------------------------------------
+  app.PetClinicRuntimeHints -> model.BaseEntity
+  app.PetClinicRuntimeHints -> model.Person
+  app.PetClinicRuntimeHints -> vet.Vet
+  owner.Owner -> model.Person
+  owner.Pet -> model.NamedEntity
+  owner.PetType -> model.NamedEntity
+  owner.Visit -> model.BaseEntity
+  owner.Visit -> vet.Vet
+  owner.VisitController -> vet.Vet
+  owner.VisitController -> vet.VetRepository
+  vet.Specialty -> model.NamedEntity
+  vet.Vet -> model.NamedEntity
+  vet.Vet -> model.Person
+
+Dependencias entre modulos que atingem tipos de implementacao: 4
+------------------------------------------------------------------------------
+  app.PetClinicRuntimeHints -> vet.Vet  [@Entity]
+  owner.Visit -> vet.Vet  [@Entity]
+  owner.VisitController -> vet.Vet  [@Entity]
+  owner.VisitController -> vet.VetRepository  [repositorio]
+
+Classes fora do modulo visit que dependem de Visit/VisitRepository: 3
+------------------------------------------------------------------------------
+  owner.Owner -> Visit
+  owner.Pet -> Visit
+  owner.VisitController -> Visit
+
+Ciclos entre modulos (ArchUnit slices): 0
+------------------------------------------------------------------------------
+  (nenhum)
+
+Indicadores - c2-baseline
+| Indicador | Valor |
+|---|---|
+| Tipos public / total | 19 / 26 (73.1%) |
+| @Entity public / total | 6 / 6 |
+| Repositorios public / total | 3 / 3 |
+| Beans Spring public / total | 6 / 13 |
+| Dependencias classe->classe entre modulos | 13 |
+| ...que atingem tipos de implementacao | 4 |
+| Classes fora de visit dependentes de Visit/VisitRepository | 3 |
+| Ciclos entre modulos | 0 |
+
+| Modulo | Tipos | Public | @Entity public | Repos public | Beans public | Ca (classes) | Ce (classes) |
+|---|---|---|---|---|---|---|---|
+| app | 2 | 2 | 0/0 | 0/0 | 0/0 | 0 | 1 |
+| model | 3 | 3 | 0/0 | 0/0 | 0/0 | 7 | 0 |
+| owner | 11 | 8 | 4/4 | 2/2 | 3/6 | 0 | 5 |
+| system | 4 | 1 | 0/0 | 0/0 | 1/4 | 0 | 0 |
+| vet | 6 | 5 | 2/2 | 1/1 | 2/3 | 3 | 2 |
+
+indicador,valor,total
+tipos_public,19,26
+entity_public,6,6
+repositorios_public,3,3
+beans_public,6,13
+deps_entre_modulos,13,
+deps_em_implementacao,4,
+dependentes_de_visit_fora_de_visit,3,
+ciclos_entre_modulos,0,

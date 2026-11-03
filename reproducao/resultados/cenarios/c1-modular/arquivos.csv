@@ -1,0 +1,4 @@
+status,arquivo,linhas_codigo_inseridas,linhas_codigo_removidas,contexto
+M,src/main/java/org/springframework/samples/petclinic/visit/OwnerPageVisitsAdvice.java,1,1,visita
+M,src/main/java/org/springframework/samples/petclinic/visit/VisitRepository.java,2,0,visita
+M,src/test/java/org/springframework/samples/petclinic/visit/VisitRepositoryTests.java,16,0,visita

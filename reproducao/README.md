@@ -2,30 +2,40 @@
 
 Este diretório permite refazer, em qualquer máquina, as medições do artigo *Análise de manutenibilidade em arquiteturas de software: um estudo comparativo entre monólito tradicional e monólito modular no ecossistema Java* e conferir que os números são os mesmos.
 
-O script mede as duas versões com os mesmos instrumentos:
+O script mede todas as versões usadas no estudo com os mesmos instrumentos:
 
-| Versão | Origem |
-|---|---|
-| Baseline (monólito tradicional) | commit `acd6c2b`, branch `main` |
-| Modular (monólito modular) | checkout atual (tag `tcc-final`, branch `refatoracao-modular`) |
+| Versão | Commit | Branch |
+|---|---|---|
+| Baseline (monólito tradicional) | `acd6c2b` | `main` |
+| Modular (monólito modular) | checkout atual | `refatoracao-modular`, tag `tcc-final` |
+| Modular sem a visita inicial automática (controle) | `8bb7d23` | `modular-sem-visita-inicial` |
+| Base modular dos cenários | `49d9597` | — |
+| Cenário C1, baseline / modular | `d1b9611` / `63771a5` | `cenario-c1-main` / `cenario-c1-modular` |
+| Cenário C2, baseline / modular | `34c36ba` / `86eace8` | `cenario-c2-main` / `cenario-c2-modular` |
+
+Os commits ficam fixos no script, para que a medição não dependa de para onde as branches apontam.
 
 ## O que é reproduzido
 
-| Arquivo | Conteúdo | No artigo |
+| Arquivo em `resultados/` | Conteúdo | No artigo |
 |---|---|---|
-| `resultados/RESUMO.md` | tabelas-resumo de tudo abaixo | — |
-| `resultados/<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
-| `resultados/<versão>/encapsulamento.*` | indicadores de encapsulamento (`EncapsulationReport`) | Tabela 2 |
-| `resultados/<versão>/martin-metrics.*` | métricas de pacote de Martin (`MartinMetricsReport`) | Tabela 3 |
-| `ambiente.txt` | SO, JDK, Gradle e dependências da última execução | Quadro 2 |
+| `RESUMO.md` | todas as tabelas abaixo, lado a lado | — |
+| `esforco.csv` | arquivos e linhas alterados da baseline para a versão modular | Tabela 1 |
+| `<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
+| `<versão>/encapsulamento.*` | indicadores de encapsulamento (`EncapsulationReport`) | Tabela 2 |
+| `<versão>/martin-metrics.*` | métricas de pacote de Martin (`MartinMetricsReport`) | Tabela 3 |
+| `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 7 |
+| `controle-sem-visita-inicial/` | as mesmas medições, na variante de controle | Tabela 8 |
 
-O SonarQube (Tabelas 5 e 6) fica de fora, porque precisa de um servidor e de um token. Os cenários de mudança (Tabela 7) estão nas branches `cenario-c1-main`, `cenario-c1-modular`, `cenario-c2-main` e `cenario-c2-modular`.
+`<versão>` é `baseline`, `modular` ou `controle-sem-visita-inicial`. O arquivo `reproducao/ambiente.txt` registra o SO, o JDK, o Gradle e as dependências da última execução (Quadro 2).
+
+O SonarQube (Tabelas 5 e 6) fica de fora, porque precisa de um servidor e de um token.
 
 ## Pré-requisitos
 
 - JDK 21
 - Docker em execução (os testes de integração com MySQL e PostgreSQL usam Testcontainers)
-- Python 3 e Git
+- Python 3 e Git, com o histórico completo do repositório (um clone normal já traz)
 
 ## Como reproduzir
 
@@ -35,8 +45,8 @@ git checkout tcc-final
 git status --porcelain reproducao/resultados   # vazio = resultados idênticos aos do artigo
 ```
 
-A execução leva poucos minutos. O workflow `.github/workflows/reproducao.yml` faz o mesmo no GitHub Actions (Ubuntu, JDK 21) e falha se algum resultado mudar.
+A execução leva de 10 a 20 minutos, porque roda a suíte de testes de sete versões. O workflow `.github/workflows/reproducao.yml` faz o mesmo no GitHub Actions (Ubuntu, JDK 21) e falha se algum resultado mudar.
 
-## Observação sobre a baseline
+## Observação sobre o Spring Modulith
 
-A baseline declara o Spring Modulith 1.2.0, feito para o Spring Boot 3.3. Para que as duas versões usem a mesma linha compatível com o Spring Boot 4.1, o script troca essa versão por 2.1.1 no worktree temporário da baseline. Nada é commitado na `main`, e o código da aplicação não é alterado.
+A baseline e os commits derivados dela (base dos cenários e cenários) declaram o Spring Modulith 1.2.0, feito para o Spring Boot 3.3. Para que todas as versões usem a mesma linha, compatível com o Spring Boot 4.1, o script troca essa versão por 2.1.1 nos worktrees temporários. Nada é commitado nessas versões, e o código da aplicação não é alterado.

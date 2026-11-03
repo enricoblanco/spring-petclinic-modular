@@ -84,7 +84,7 @@ class VisitRepositoryTests {
 			this.visits.save(visit);
 		}
 
-		List<Visit> recent = this.visits.findTop5ByPetIdOrderByDateDesc(7);
+		List<Visit> recent = this.visits.findTop5ByPetIdOrderByDateDescIdDesc(7);
 
 		assertThat(recent).hasSize(5)
 			.extracting(Visit::getDate)

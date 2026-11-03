@@ -12,6 +12,6 @@ interface VisitRepository extends JpaRepository<Visit, Integer> {
 	List<Visit> findByPetId(Integer petId);
 
 	@Transactional(readOnly = true)
-	List<Visit> findTop5ByPetIdOrderByDateDesc(Integer petId);
+	List<Visit> findTop5ByPetIdOrderByDateDescIdDesc(Integer petId);
 
 }

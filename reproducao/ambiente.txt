@@ -29,7 +29,7 @@ git version 2.54.0 (Apple Git-157)
 Docker version 29.9.1, build dfc520d
 
 ## Commits medidos
-modular:                    f164ae19809891de8713a3362bb446120217cb6c (refatoracao-modular)
+modular:                    a56472f19e45f571cbfad56f008ae9118bac91b3 (refatoracao-modular)
 baseline:                   acd6c2bdb27aee9358bfed046fe772e3949b94aa
 controle sem visita inicial: a9481c32a88cc754a0af87bc940d910e161d02f3
 base dos cenários:          49d9597fdaadd9a85600e30485376eb0d8d0585d

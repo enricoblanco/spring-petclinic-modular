@@ -1,0 +1,37 @@
+==============================================================================
+Robert C. Martin package metrics (ArchUnit) - amostra-completude
+Classes dir: <amostra-completude>
+Arquivos .class no disco: 10 | Classes importadas: 10  (OK, nenhuma classe descartada)
+==============================================================================
+
+Pacote: org.springframework.samples.petclinic.amostra  [amostra]
+------------------------------------------------------------------------------
+  Total Classes (Nc):     10   (public: 1)
+  Concrete Classes:       8
+  Abstract Classes (Na):  2
+  Classes concretas:
+    - Externa (public)
+    - Externa$1 (package-private/outra, nested)
+    - Externa$1Local (package-private/outra, nested)
+    - Externa$Aninhada (package-private/outra, nested)
+    - Externa$Cor (package-private/outra, enum, nested)
+    - Externa$Cor$1 (package-private/outra, enum, nested)
+    - Externa$Interna (package-private/outra, nested)
+    - Externa$Registro (package-private/outra, record, nested)
+  Classes abstratas/interfaces:
+    - Marca (package-private/outra, interface)
+    - package-info (package-private/outra, interface)
+  Ca (Afferent Coupling): 0  <- (nenhum)
+  Ce (Efferent Coupling): 0  -> (nenhum)
+  I  (Instability):       1.00
+  A  (Abstractness)  ArchUnit (so public): 0.00 | todas as classes: 0.20
+  D  (Distance)      ArchUnit (so public): 0.00 | todas as classes: 0.20
+
+Resumo (Markdown) - amostra-completude
+| Pacote | Nc | Concretas | Na | Public | Ca | Ce | I | A (ArchUnit) | D (ArchUnit) | A (todas) | D (todas) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| amostra | 10 | 8 | 2 | 1 | 0 | 0 | 1.00 | 0.00 | 0.00 | 0.20 | 0.20 |
+
+Resumo (CSV) - amostra-completude
+pacote,nc,concretas,na,public,ca,ce,i,a_archunit,d_archunit,a_todas,d_todas
+amostra,10,8,2,1,0,0,1.00,0.00,0.00,0.20,0.20

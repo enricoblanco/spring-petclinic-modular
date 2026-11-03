@@ -98,3 +98,52 @@ Testes executados nos commits de verificação, um acima de cada cenário. Suít
 | `visit`: D (todas) | — | 0,20 | 0,17 | — |
 
 Variante de controle: branch `modular-sem-visita-inicial`, igual à versão modular sem `PetRegisteredEvent`, `PetRegistrationListener` e seus testes.
+
+## JDepend 2.9.1 no bytecode do Java 21 (artigo, Seção 4.4.1)
+
+| Versão | Arquivos .class | Classes analisadas pelo JDepend | Mensagens de erro | Ignoradas com `invokedynamic` | Analisadas com `invokedynamic` |
+|---|---|---|---|---|---|
+| Baseline | 25 | 18 | 7 × `Unknown constant: 18` | 7 de 7 | 0 |
+| Modular | 33 | 24 | 9 × `Unknown constant: 18` | 9 de 9 | 0 |
+
+Classes ignoradas e o recurso que gerou a entrada `invokedynamic` (tag 18 do *constant pool*), que o analisador do JDepend 2.9.1 não reconhece (ele trata apenas as tags 1 a 12):
+
+| Versão | Classe | Bootstrap |
+|---|---|---|
+| baseline | `PetClinicRuntimeHints` | LambdaMetafactory |
+| baseline | `owner.OwnerController` | LambdaMetafactory StringConcatFactory |
+| baseline | `owner.PetController` | LambdaMetafactory StringConcatFactory |
+| baseline | `owner.PetTypeFormatter` | StringConcatFactory |
+| baseline | `owner.VisitController` | LambdaMetafactory StringConcatFactory |
+| baseline | `system.CacheConfiguration` | LambdaMetafactory |
+| baseline | `vet.Vet` | LambdaMetafactory |
+| modular | `PetClinicRuntimeHints` | LambdaMetafactory |
+| modular | `owner.OwnerController` | LambdaMetafactory StringConcatFactory |
+| modular | `owner.OwnerService` | LambdaMetafactory StringConcatFactory |
+| modular | `owner.PetController` | LambdaMetafactory StringConcatFactory |
+| modular | `owner.PetDetails` | ObjectMethods |
+| modular | `owner.PetRegisteredEvent` | ObjectMethods |
+| modular | `owner.PetTypeFormatter` | StringConcatFactory |
+| modular | `system.CacheConfiguration` | LambdaMetafactory |
+| modular | `vet.Vet` | LambdaMetafactory |
+
+`LambdaMetafactory`: expressão lambda ou referência a método; `StringConcatFactory`: concatenação de *strings* com `+` (Java 9 ou superior); `ObjectMethods`: `toString`, `equals` e `hashCode` gerados para um *record*. Saída bruta em `<versão>/jdepend-2.9.1.txt`; classe a classe em `<versão>/jdepend-2.9.1.csv`.
+
+## Conferência de completude: classes geradas pelo compilador (artigo, Seção 4.4.1)
+
+Amostra `reproducao/amostra-completude`, compilada com `javac --release 21` e medida pelo `MartinMetricsReport`. Resultado da conferência: `Arquivos .class no disco: 10 | Classes importadas: 10  (OK, nenhuma classe descartada)`.
+
+| Arquivo .class | Importado pelo ArchUnit | Como o relatório o descreve |
+|---|---|---|
+| `amostra.Externa` | sim | public |
+| `amostra.Externa$1` | sim | package-private/outra, nested |
+| `amostra.Externa$1Local` | sim | package-private/outra, nested |
+| `amostra.Externa$Aninhada` | sim | package-private/outra, nested |
+| `amostra.Externa$Cor` | sim | package-private/outra, enum, nested |
+| `amostra.Externa$Cor$1` | sim | package-private/outra, enum, nested |
+| `amostra.Externa$Interna` | sim | package-private/outra, nested |
+| `amostra.Externa$Registro` | sim | package-private/outra, record, nested |
+| `amostra.Marca` | sim | package-private/outra, interface |
+| `amostra.package-info` | sim | package-private/outra, interface |
+
+A expressão lambda e a referência a método da amostra não geram arquivo .class (o corpo vira um método privado de `Externa`) e, por isso, não entram em nenhuma das duas contagens.

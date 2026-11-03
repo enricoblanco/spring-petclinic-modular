@@ -1,0 +1,26 @@
+classe,analisada_pelo_jdepend,invokedynamic
+org.springframework.samples.petclinic.PetClinicApplication,sim,—
+org.springframework.samples.petclinic.PetClinicRuntimeHints,não,LambdaMetafactory
+org.springframework.samples.petclinic.model.BaseEntity,sim,—
+org.springframework.samples.petclinic.model.NamedEntity,sim,—
+org.springframework.samples.petclinic.model.Person,sim,—
+org.springframework.samples.petclinic.owner.Owner,sim,—
+org.springframework.samples.petclinic.owner.OwnerController,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.owner.OwnerRepository,sim,—
+org.springframework.samples.petclinic.owner.Pet,sim,—
+org.springframework.samples.petclinic.owner.PetController,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.owner.PetType,sim,—
+org.springframework.samples.petclinic.owner.PetTypeFormatter,não,StringConcatFactory
+org.springframework.samples.petclinic.owner.PetTypeRepository,sim,—
+org.springframework.samples.petclinic.owner.PetValidator,sim,—
+org.springframework.samples.petclinic.owner.Visit,sim,—
+org.springframework.samples.petclinic.owner.VisitController,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.system.CacheConfiguration,não,LambdaMetafactory
+org.springframework.samples.petclinic.system.CrashController,sim,—
+org.springframework.samples.petclinic.system.WebConfiguration,sim,—
+org.springframework.samples.petclinic.system.WelcomeController,sim,—
+org.springframework.samples.petclinic.vet.Specialty,sim,—
+org.springframework.samples.petclinic.vet.Vet,não,LambdaMetafactory
+org.springframework.samples.petclinic.vet.VetController,sim,—
+org.springframework.samples.petclinic.vet.VetRepository,sim,—
+org.springframework.samples.petclinic.vet.Vets,sim,—

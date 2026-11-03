@@ -1,0 +1,34 @@
+classe,analisada_pelo_jdepend,invokedynamic
+org.springframework.samples.petclinic.PetClinicApplication,sim,—
+org.springframework.samples.petclinic.PetClinicRuntimeHints,não,LambdaMetafactory
+org.springframework.samples.petclinic.model.BaseEntity,sim,—
+org.springframework.samples.petclinic.model.NamedEntity,sim,—
+org.springframework.samples.petclinic.model.Person,sim,—
+org.springframework.samples.petclinic.owner.Owner,sim,—
+org.springframework.samples.petclinic.owner.OwnerController,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.owner.OwnerExternalAPI,sim,—
+org.springframework.samples.petclinic.owner.OwnerRepository,sim,—
+org.springframework.samples.petclinic.owner.OwnerService,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.owner.Pet,sim,—
+org.springframework.samples.petclinic.owner.PetController,não,LambdaMetafactory StringConcatFactory
+org.springframework.samples.petclinic.owner.PetDetails,não,ObjectMethods
+org.springframework.samples.petclinic.owner.PetRegisteredEvent,não,ObjectMethods
+org.springframework.samples.petclinic.owner.PetType,sim,—
+org.springframework.samples.petclinic.owner.PetTypeFormatter,não,StringConcatFactory
+org.springframework.samples.petclinic.owner.PetTypeRepository,sim,—
+org.springframework.samples.petclinic.owner.PetValidator,sim,—
+org.springframework.samples.petclinic.system.CacheConfiguration,não,LambdaMetafactory
+org.springframework.samples.petclinic.system.CrashController,sim,—
+org.springframework.samples.petclinic.system.WebConfiguration,sim,—
+org.springframework.samples.petclinic.system.WelcomeController,sim,—
+org.springframework.samples.petclinic.vet.Specialty,sim,—
+org.springframework.samples.petclinic.vet.Vet,não,LambdaMetafactory
+org.springframework.samples.petclinic.vet.VetController,sim,—
+org.springframework.samples.petclinic.vet.VetRepository,sim,—
+org.springframework.samples.petclinic.vet.Vets,sim,—
+org.springframework.samples.petclinic.visit.OwnerPageVisitsAdvice,sim,—
+org.springframework.samples.petclinic.visit.PetRegistrationListener,sim,—
+org.springframework.samples.petclinic.visit.Visit,sim,—
+org.springframework.samples.petclinic.visit.VisitController,sim,—
+org.springframework.samples.petclinic.visit.VisitForm,sim,—
+org.springframework.samples.petclinic.visit.VisitRepository,sim,—

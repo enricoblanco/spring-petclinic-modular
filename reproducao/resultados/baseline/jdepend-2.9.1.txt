@@ -1,0 +1,290 @@
+
+--------------------------------------------------
+- Package: java.io
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: java.lang
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: java.time
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: java.util
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.boot
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.core.style
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.dao
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.data.domain
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.data.jpa.repository
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.data.repository
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.samples.petclinic
+--------------------------------------------------
+
+Stats:
+    Total Classes: 1
+    Concrete Classes: 1
+    Abstract Classes: 0
+
+    Ca: 0
+    Ce: 2
+
+    A: 0
+    I: 1
+    D: 0
+
+Abstract Classes:
+
+Concrete Classes:
+    org.springframework.samples.petclinic.PetClinicApplication
+
+Depends Upon:
+    java.lang
+    org.springframework.boot
+
+Used By:
+    Not used by any packages.
+
+--------------------------------------------------
+- Package: org.springframework.samples.petclinic.model
+--------------------------------------------------
+
+Stats:
+    Total Classes: 3
+    Concrete Classes: 3
+    Abstract Classes: 0
+
+    Ca: 2
+    Ce: 2
+
+    A: 0
+    I: 0,5
+    D: 0,5
+
+Abstract Classes:
+
+Concrete Classes:
+    org.springframework.samples.petclinic.model.BaseEntity
+    org.springframework.samples.petclinic.model.NamedEntity
+    org.springframework.samples.petclinic.model.Person
+
+Depends Upon:
+    java.io
+    java.lang
+
+Used By:
+    org.springframework.samples.petclinic.owner
+    org.springframework.samples.petclinic.vet
+
+--------------------------------------------------
+- Package: org.springframework.samples.petclinic.owner
+--------------------------------------------------
+
+Stats:
+    Total Classes: 7
+    Concrete Classes: 5
+    Abstract Classes: 2
+
+    Ca: 0
+    Ce: 9
+
+    A: 0,29
+    I: 1
+    D: 0,29
+
+Abstract Classes:
+    org.springframework.samples.petclinic.owner.OwnerRepository
+    org.springframework.samples.petclinic.owner.PetTypeRepository
+
+Concrete Classes:
+    org.springframework.samples.petclinic.owner.Owner
+    org.springframework.samples.petclinic.owner.Pet
+    org.springframework.samples.petclinic.owner.PetType
+    org.springframework.samples.petclinic.owner.PetValidator
+    org.springframework.samples.petclinic.owner.Visit
+
+Depends Upon:
+    java.lang
+    java.time
+    java.util
+    org.springframework.core.style
+    org.springframework.data.domain
+    org.springframework.data.jpa.repository
+    org.springframework.samples.petclinic.model
+    org.springframework.util
+    org.springframework.validation
+
+Used By:
+    Not used by any packages.
+
+--------------------------------------------------
+- Package: org.springframework.samples.petclinic.system
+--------------------------------------------------
+
+Stats:
+    Total Classes: 3
+    Concrete Classes: 3
+    Abstract Classes: 0
+
+    Ca: 0
+    Ce: 5
+
+    A: 0
+    I: 1
+    D: 0
+
+Abstract Classes:
+
+Concrete Classes:
+    org.springframework.samples.petclinic.system.CrashController
+    org.springframework.samples.petclinic.system.WebConfiguration
+    org.springframework.samples.petclinic.system.WelcomeController
+
+Depends Upon:
+    java.lang
+    java.util
+    org.springframework.web.servlet
+    org.springframework.web.servlet.config.annotation
+    org.springframework.web.servlet.i18n
+
+Used By:
+    Not used by any packages.
+
+--------------------------------------------------
+- Package: org.springframework.samples.petclinic.vet
+--------------------------------------------------
+
+Stats:
+    Total Classes: 4
+    Concrete Classes: 3
+    Abstract Classes: 1
+
+    Ca: 0
+    Ce: 8
+
+    A: 0,25
+    I: 1
+    D: 0,25
+
+Abstract Classes:
+    org.springframework.samples.petclinic.vet.VetRepository
+
+Concrete Classes:
+    org.springframework.samples.petclinic.vet.Specialty
+    org.springframework.samples.petclinic.vet.VetController
+    org.springframework.samples.petclinic.vet.Vets
+
+Depends Upon:
+    java.lang
+    java.util
+    org.springframework.dao
+    org.springframework.data.domain
+    org.springframework.data.repository
+    org.springframework.samples.petclinic.model
+    org.springframework.ui
+    org.springframework.web.servlet.mvc.support
+
+Used By:
+    Not used by any packages.
+
+--------------------------------------------------
+- Package: org.springframework.ui
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.util
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.validation
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.web.servlet
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.web.servlet.config.annotation
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.web.servlet.i18n
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+--------------------------------------------------
+- Package: org.springframework.web.servlet.mvc.support
+--------------------------------------------------
+No stats available: package referenced, but not analyzed.
+
+
+--------------------------------------------------
+- Package Dependency Cycles:
+--------------------------------------------------
+
+
+--------------------------------------------------
+- Summary:
+--------------------------------------------------
+
+Name, Class Count, Abstract Class Count, Ca, Ce, A, I, D, V:
+
+java.io,0,0,1,0,0,0,1,1
+java.lang,0,0,5,0,0,0,1,1
+java.time,0,0,1,0,0,0,1,1
+java.util,0,0,3,0,0,0,1,1
+org.springframework.boot,0,0,1,0,0,0,1,1
+org.springframework.core.style,0,0,1,0,0,0,1,1
+org.springframework.dao,0,0,1,0,0,0,1,1
+org.springframework.data.domain,0,0,2,0,0,0,1,1
+org.springframework.data.jpa.repository,0,0,1,0,0,0,1,1
+org.springframework.data.repository,0,0,1,0,0,0,1,1
+org.springframework.samples.petclinic,1,0,0,2,0,1,0,1
+org.springframework.samples.petclinic.model,3,0,2,2,0,0,5,0,5,1
+org.springframework.samples.petclinic.owner,7,2,0,9,0,29,1,0,29,1
+org.springframework.samples.petclinic.system,3,0,0,5,0,1,0,1
+org.springframework.samples.petclinic.vet,4,1,0,8,0,25,1,0,25,1
+org.springframework.ui,0,0,1,0,0,0,1,1
+org.springframework.util,0,0,1,0,0,0,1,1
+org.springframework.validation,0,0,1,0,0,0,1,1
+org.springframework.web.servlet,0,0,1,0,0,0,1,1
+org.springframework.web.servlet.config.annotation,0,0,1,0,0,0,1,1
+org.springframework.web.servlet.i18n,0,0,1,0,0,0,1,1
+org.springframework.web.servlet.mvc.support,0,0,1,0,0,0,1,1

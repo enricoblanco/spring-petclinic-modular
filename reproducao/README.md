@@ -28,6 +28,8 @@ Os commits ficam fixos no script, para que a medição não dependa de para onde
 | `<versão>/martin-metrics.*` | métricas de pacote de Martin (`MartinMetricsReport`) | Tabela 3 |
 | `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 7 |
 | `cenarios/aceite.csv` | cada critério de aceitação dos cenários, com o teste e o resultado em cada versão | Seções 4.4.4 e 5.7 |
+| `<versão>/jdepend-2.9.1.*` | saída do JDepend 2.9.1 original e, classe a classe, se foi analisada e quais entradas `invokedynamic` tem (baseline e modular) | Seção 4.4.1 |
+| `amostra-completude.*` | conferência de completude numa amostra com classes aninhadas, interna, local, anônima, record, enum com corpo e `package-info` (código em `reproducao/amostra-completude/`) | Seção 4.4.1 |
 | `controle-sem-visita-inicial/` | as mesmas medições, na variante de controle | Tabela 8 |
 
 `<versão>` é `baseline`, `modular` ou `controle-sem-visita-inicial`. O arquivo `reproducao/ambiente.txt` registra o SO, o JDK, o Gradle e as dependências da última execução (Quadro 2).

@@ -170,6 +170,33 @@ tasks.register('encapsulationReport', JavaExec) {
   }
 }
 
+// The original JDepend 2.9.1, kept only as evidence (paper, Section 4.4.1): it skips every class whose constant
+// pool has a CONSTANT_InvokeDynamic entry (tag 18), printing "Unknown constant: 18" without naming the class
+configurations {
+  jdependOriginal
+}
+
+dependencies {
+  jdependOriginal 'jdepend:jdepend:2.9.1'
+}
+
+tasks.register('jdependOriginalReport', JavaExec) {
+  group = 'verification'
+  description = 'Runs the original JDepend 2.9.1 to show which classes it skips on Java 21 bytecode'
+  dependsOn 'classes'
+  classpath = configurations.jdependOriginal
+  mainClass = 'jdepend.textui.JDepend'
+  outputs.upToDateWhen { false }
+  def reportDir = layout.buildDirectory.dir('reports/jdepend-original')
+  doFirst {
+    def dir = reportDir.get().asFile
+    dir.mkdirs()
+    def label = project.findProperty('label') ?: 'local'
+    args = ['-file', new File(dir, "jdepend-${label}.txt").path, metricsClassesDir()]
+    errorOutput = new FileOutputStream(new File(dir, "jdepend-${label}.err"))
+  }
+}
+
 // -PclassesDir and -Plabel measure another version (e.g. a worktree of main) without copying the metrics code
 def metricsClassesDir() {
   project.findProperty('classesDir') ?: layout.buildDirectory.dir('classes/java/main').get().asFile.path

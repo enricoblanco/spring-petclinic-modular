@@ -1,0 +1,11 @@
+arquivo_class,importado_pelo_archunit,descricao
+amostra.Externa,sim,public
+amostra.Externa$1,sim,"package-private/outra, nested"
+amostra.Externa$1Local,sim,"package-private/outra, nested"
+amostra.Externa$Aninhada,sim,"package-private/outra, nested"
+amostra.Externa$Cor,sim,"package-private/outra, enum, nested"
+amostra.Externa$Cor$1,sim,"package-private/outra, enum, nested"
+amostra.Externa$Interna,sim,"package-private/outra, nested"
+amostra.Externa$Registro,sim,"package-private/outra, record, nested"
+amostra.Marca,sim,"package-private/outra, interface"
+amostra.package-info,sim,"package-private/outra, interface"

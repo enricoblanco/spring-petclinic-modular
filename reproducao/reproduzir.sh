@@ -76,6 +76,15 @@ for spec in "baseline:$BASELINE_REF:tests" "controle:$CONTROLE_REF:tests" "cenar
 	measure "$name" "$WT_PARENT/$name"
 done
 
+echo "==> JDepend 2.9.1 original na baseline e na versão modular (evidência da Seção 4.4.1)"
+./gradlew --console=plain jdependOriginalReport -PclassesDir="$WT_PARENT/baseline/build/classes/java/main" -Plabel=baseline
+./gradlew --console=plain jdependOriginalReport -PclassesDir="$ROOT/build/classes/java/main" -Plabel=modular
+
+echo "==> Conferência de completude numa amostra com classes aninhadas, anônimas e package-info"
+mkdir -p "$WT_PARENT/amostra-completude"
+javac --release 21 -d "$WT_PARENT/amostra-completude" $(find "$ROOT/reproducao/amostra-completude" -name '*.java' | sort)
+./gradlew --console=plain jdependReport -PclassesDir="$WT_PARENT/amostra-completude" -Plabel=amostra-completude
+
 echo "==> Critérios de aceitação dos cenários (commits de verificação)"
 for spec in "c1-baseline-aceite:$C1_BASELINE_ACEITE_REF" "c1-modular-aceite:$C1_MODULAR_ACEITE_REF" \
 	"c2-baseline-aceite:$C2_BASELINE_ACEITE_REF" "c2-modular-aceite:$C2_MODULAR_ACEITE_REF"; do

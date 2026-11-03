@@ -8,6 +8,7 @@ execuções em máquinas diferentes produzam arquivos idênticos.
 import csv
 import glob
 import os
+import re
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -374,6 +375,88 @@ for pkg in ("owner", "visit"):
         L.append(f"| `{pkg}`: {title} | {b} | {br(mc[pkg][k])} | {br(mm[pkg][k])} | — |")
 L += ["", "Variante de controle: branch `modular-sem-visita-inicial`, igual à versão modular sem "
       "`PetRegisteredEvent`, `PetRegistrationListener` e seus testes.", ""]
+
+# ---------------------------------------------------------------- instrument evidence (Section 4.4.1)
+
+BASE_PKG = "org.springframework.samples.petclinic"
+BOOTSTRAPS = ("LambdaMetafactory", "StringConcatFactory", "ObjectMethods", "SwitchBootstraps")
+
+
+def class_files(classes_dir):
+    """Class names of every .class file under the base package, nested and anonymous ones included."""
+    root = os.path.join(classes_dir, *BASE_PKG.split("."))
+    names = []
+    for dirpath, _, files in os.walk(root):
+        for name in files:
+            if name.endswith(".class") and " " not in name:
+                rel = os.path.relpath(os.path.join(dirpath, name), classes_dir)
+                names.append(rel[:-len(".class")].replace(os.sep, "."))
+    return sorted(names)
+
+
+def bootstraps(classes_dir, name):
+    """invokedynamic bootstrap classes referenced by a class file (empty: no CONSTANT_InvokeDynamic entry)."""
+    out = subprocess.run(["javap", "-v", "-p", os.path.join(classes_dir, *name.split(".")) + ".class"],
+                         check=True, capture_output=True, text=True).stdout
+    return sorted({b for b in BOOTSTRAPS if f"java/lang/invoke/{b}" in out or f"java/lang/runtime/{b}" in out})
+
+
+jdepend_rows = []
+for label, folder in (("baseline", "baseline"), ("modular", "modular")):
+    classes_dir = os.path.join(VERSIONS[label][1], "build/classes/java/main")
+    report = os.path.join(ROOT, f"build/reports/jdepend-original/jdepend-{label}")
+    with open(report + ".txt") as f:
+        text = f.read()
+    with open(report + ".err") as f:
+        errors = [line for line in f.read().splitlines() if line.strip()]
+    seen = set(re.findall(r"^\s+(" + re.escape(BASE_PKG) + r"(?:\.[a-z]\w*)*\.[A-Z][\w$]*)\s*$", text, re.M))
+    rows = [[name, "sim" if name in seen else "não", " ".join(bootstraps(classes_dir, name)) or "—"]
+            for name in class_files(classes_dir)]
+    write_csv(os.path.join(OUT, folder, "jdepend-2.9.1.csv"), ["classe", "analisada_pelo_jdepend", "invokedynamic"],
+              rows)
+    with open(os.path.join(OUT, folder, "jdepend-2.9.1.txt"), "w") as f:
+        f.write(text)
+    jdepend_rows.append((label, rows, errors))
+
+L += ["## JDepend 2.9.1 no bytecode do Java 21 (artigo, Seção 4.4.1)", "",
+      "| Versão | Arquivos .class | Classes analisadas pelo JDepend | Mensagens de erro | Ignoradas com "
+      "`invokedynamic` | Analisadas com `invokedynamic` |", "|---|---|---|---|---|---|"]
+for label, rows, errors in jdepend_rows:
+    skipped = [r for r in rows if r[1] == "não"]
+    L.append(f"| {label.capitalize()} | {len(rows)} | {len(rows) - len(skipped)} | {len(errors)} × "
+             f"`{errors[0] if errors else '—'}` | {sum(r[2] != '—' for r in skipped)} de {len(skipped)} | "
+             f"{sum(r[2] != '—' for r in rows if r[1] == 'sim')} |")
+L += ["", "Classes ignoradas e o recurso que gerou a entrada `invokedynamic` (tag 18 do *constant pool*), "
+      "que o analisador do JDepend 2.9.1 não reconhece (ele trata apenas as tags 1 a 12):", "",
+      "| Versão | Classe | Bootstrap |", "|---|---|---|"]
+for label, rows, _ in jdepend_rows:
+    for name, analysed, boot in rows:
+        if analysed == "não":
+            L.append(f"| {label} | `{name.removeprefix(BASE_PKG + '.')}` | {boot} |")
+L += ["", "`LambdaMetafactory`: expressão lambda ou referência a método; `StringConcatFactory`: concatenação "
+      "de *strings* com `+` (Java 9 ou superior); `ObjectMethods`: `toString`, `equals` e `hashCode` gerados "
+      "para um *record*. Saída bruta em `<versão>/jdepend-2.9.1.txt`; classe a classe em "
+      "`<versão>/jdepend-2.9.1.csv`.", ""]
+
+sample_dir = os.path.join(WT, "amostra-completude")
+with open(os.path.join(ROOT, "build/reports/martin-metrics/martin-metrics-amostra-completude.txt")) as f:
+    sample_report = f.read().replace(sample_dir, "<amostra-completude>")
+with open(os.path.join(OUT, "amostra-completude.txt"), "w") as f:
+    f.write(sample_report)
+listed =dict(re.findall(r"^\s+- (\S+) \(([^)]*)\)$", sample_report, re.M))
+sample_rows = [[name.removeprefix(BASE_PKG + "."), "sim" if name.rsplit(".", 1)[-1] in listed else "não",
+                listed.get(name.rsplit(".", 1)[-1], "")] for name in class_files(sample_dir)]
+write_csv(os.path.join(OUT, "amostra-completude.csv"), ["arquivo_class", "importado_pelo_archunit", "descricao"],
+          sample_rows)
+check = re.search(r"Arquivos \.class no disco: .*", sample_report).group(0)
+L += ["## Conferência de completude: classes geradas pelo compilador (artigo, Seção 4.4.1)", "",
+      "Amostra `reproducao/amostra-completude`, compilada com `javac --release 21` e medida pelo "
+      f"`MartinMetricsReport`. Resultado da conferência: `{check.strip()}`.", "",
+      "| Arquivo .class | Importado pelo ArchUnit | Como o relatório o descreve |", "|---|---|---|"]
+for name, imported, desc in sample_rows:
+    L.append(f"| `{name}` | {imported} | {desc} |")
+L += ["", "A expressão lambda e a referência a método da amostra não geram arquivo .class (o corpo vira um "
+      "método privado de `Externa`) e, por isso, não entram em nenhuma das duas contagens.", ""]
 
 with open(os.path.join(OUT, "RESUMO.md"), "w") as f:
     f.write("\n".join(L))

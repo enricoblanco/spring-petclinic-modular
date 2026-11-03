@@ -275,6 +275,72 @@ L += ["", "Diff de cada cenário em relação à sua base (`acd6c2b` na baseline
       "que não pertencem ao conceito de visita (nem SQL). A lista de arquivos de cada cenário está em "
       "`cenarios/<cenário>/arquivos.csv`.", ""]
 
+ACCEPTANCE = [  # (cenário, critério, teste na baseline, teste na modular); None: não se aplica
+    ("C1", "Cinco visitas mais recentes, em ordem decrescente de data",
+     "VisitRepositoryTests.shouldFindOnlyTheMostRecentVisitsNewestFirst",
+     "VisitRepositoryTests.shouldFindOnlyTheMostRecentVisitsNewestFirst"),
+    ("C1", "Empate de data: a visita cadastrada por último (maior id) vem primeiro",
+     "VisitRepositoryTests.shouldBreakDateTiesByNewestVisitFirst",
+     "VisitRepositoryTests.shouldBreakDateTiesByNewestVisitFirst"),
+    ("C1", "Animal sem visitas: lista vazia, sem erro",
+     "VisitRepositoryTests.shouldFindNoRecentVisitsForPetWithoutVisits",
+     "VisitRepositoryTests.shouldFindNoRecentVisitsForPetWithoutVisits"),
+    ("C2", "Veterinário válido: formulário aceito e redirecionado",
+     "VisitControllerTests.processNewVisitFormSuccess", "VisitControllerTests.processNewVisitFormSuccess"),
+    ("C2", "Veterinário ausente: formulário com erro no campo, nada gravado",
+     "VisitControllerTests.processNewVisitFormHasErrorsWhenVetIsMissing",
+     "VisitControllerTests.processNewVisitFormHasErrorsWhenVetIsMissing"),
+    ("C2", "Identificador em formato inválido: formulário com erro no campo, nada gravado",
+     None, "VisitControllerTests.processNewVisitFormHasErrorsWhenVetIdIsInvalid"),
+    ("C2", "Veterinário inexistente: formulário com erro no campo, nada gravado",
+     "VisitControllerTests.processNewVisitFormHasErrorsWhenVetDoesNotExist",
+     "VisitControllerTests.processNewVisitFormHasErrorsWhenVetDoesNotExist"),
+    ("C2", "Banco: vet_id inexistente rejeitado pela chave estrangeira",
+     "VisitVetIntegrityTests.shouldRejectVisitReferencingMissingVet",
+     "VisitVetIntegrityTests.shouldRejectVisitReferencingMissingVet"),
+    ("C2", "Banco: vet_id existente ou nulo aceito",
+     "VisitVetIntegrityTests.shouldAcceptVisitReferencingExistingVetOrNoVet",
+     "VisitVetIntegrityTests.shouldAcceptVisitReferencingExistingVetOrNoVet"),
+]
+
+
+def test_results(label):
+    """{"Classe.método": "aprovado" | "falhou" | "ignorado"} from the JUnit XML of a worktree."""
+    results = {}
+    for path in glob.glob(os.path.join(WT, label, "build/test-results/test/TEST-*.xml")):
+        for case in ET.parse(path).getroot().iter("testcase"):
+            key = case.get("classname").rsplit(".", 1)[-1] + "." + case.get("name").removesuffix("()")
+            failed = case.find("failure") is not None or case.find("error") is not None
+            results[key] = "falhou" if failed else "ignorado" if case.find("skipped") is not None else "aprovado"
+    return results
+
+
+accept_tests = {}
+for scenario in ("c1", "c2"):
+    for version in ("baseline", "modular"):
+        label = f"{scenario}-{version}-aceite"
+        accept_tests[label] = test_summary(os.path.join(WT, label), os.path.join(OUT, "cenarios", label, "testes.csv"))
+results = {label: test_results(label) for label in accept_tests}
+
+
+def outcome(scenario, version, test):
+    return "não se aplica" if test is None else results[f"{scenario.lower()}-{version}-aceite"].get(test, "ausente")
+
+
+accept_rows = [[sc, crit, tb or "", outcome(sc, "baseline", tb), tm or "", outcome(sc, "modular", tm)]
+               for sc, crit, tb, tm in ACCEPTANCE]
+write_csv(os.path.join(OUT, "cenarios", "aceite.csv"),
+          ["cenario", "criterio", "teste_baseline", "resultado_baseline", "teste_modular", "resultado_modular"],
+          accept_rows)
+L += ["## Critérios de aceitação dos cenários (artigo, Seções 4.4.4 e 5.7)", "",
+      "| Cenário | Critério | Baseline | Modular |", "|---|---|---|---|"]
+for sc, crit, tb, rb, tm, rm in accept_rows:
+    L.append(f"| {sc} | {crit} | {f'`{tb}` ({rb})' if tb else rb} | {f'`{tm}` ({rm})' if tm else rm} |")
+L += ["", "Testes executados nos commits de verificação, um acima de cada cenário. Suítes completas: "
+      + "; ".join(f"{label} {t[1]} testes, {t[2] + t[3]} falhas" for label, t in accept_tests.items())
+      + ". Na baseline do C2 o veterinário é identificado pelo nome, e um texto que não corresponde a nenhum "
+      "veterinário é o caso \"inexistente\".", ""]
+
 ctrl, mod, base = enc["controle"], enc["modular"], enc["baseline"]
 mc, mm, mb = martin["controle"], martin["modular"], martin["baseline"]
 diff_ctrl = numstat(REFS["BASELINE_REF"], REFS["CONTROLE_REF"], "src/main", "src/test")

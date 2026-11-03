@@ -12,6 +12,8 @@ O script mede todas as versões usadas no estudo com os mesmos instrumentos:
 | Base modular dos cenários | `49d9597` | — |
 | Cenário C1, baseline / modular | `d1b9611` / `63771a5` | `cenario-c1-main` / `cenario-c1-modular` |
 | Cenário C2, baseline / modular | `34c36ba` / `86eace8` | `cenario-c2-main` / `cenario-c2-modular` |
+| Critérios de aceitação do C1, baseline / modular | `eecef40` / `f679f73` | um commit acima do cenário, nas mesmas branches |
+| Critérios de aceitação do C2, baseline / modular | `953d789` / `36aaaee` | um commit acima do cenário, nas mesmas branches |
 
 Os commits ficam fixos no script, para que a medição não dependa de para onde as branches apontam.
 
@@ -25,6 +27,7 @@ Os commits ficam fixos no script, para que a medição não dependa de para onde
 | `<versão>/encapsulamento.*` | indicadores de encapsulamento (`EncapsulationReport`) | Tabela 2 |
 | `<versão>/martin-metrics.*` | métricas de pacote de Martin (`MartinMetricsReport`) | Tabela 3 |
 | `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 7 |
+| `cenarios/aceite.csv` | cada critério de aceitação dos cenários, com o teste e o resultado em cada versão | Seções 4.4.4 e 5.7 |
 | `controle-sem-visita-inicial/` | as mesmas medições, na variante de controle | Tabela 8 |
 
 `<versão>` é `baseline`, `modular` ou `controle-sem-visita-inicial`. O arquivo `reproducao/ambiente.txt` registra o SO, o JDK, o Gradle e as dependências da última execução (Quadro 2).

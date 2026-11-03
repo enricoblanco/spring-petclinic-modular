@@ -57,6 +57,22 @@ Ca e Ce contam pacotes do projeto. A e D "ArchUnit" consideram só classes públ
 
 Diff de cada cenário em relação à sua base (`acd6c2b` na baseline, `49d9597` na modular). Linhas de código sem comentários e linhas em branco. "Outros contextos": arquivos já existentes, modificados, que não pertencem ao conceito de visita (nem SQL). A lista de arquivos de cada cenário está em `cenarios/<cenário>/arquivos.csv`.
 
+## Critérios de aceitação dos cenários (artigo, Seções 4.4.4 e 5.7)
+
+| Cenário | Critério | Baseline | Modular |
+|---|---|---|---|
+| C1 | Cinco visitas mais recentes, em ordem decrescente de data | `VisitRepositoryTests.shouldFindOnlyTheMostRecentVisitsNewestFirst` (aprovado) | `VisitRepositoryTests.shouldFindOnlyTheMostRecentVisitsNewestFirst` (aprovado) |
+| C1 | Empate de data: a visita cadastrada por último (maior id) vem primeiro | `VisitRepositoryTests.shouldBreakDateTiesByNewestVisitFirst` (aprovado) | `VisitRepositoryTests.shouldBreakDateTiesByNewestVisitFirst` (aprovado) |
+| C1 | Animal sem visitas: lista vazia, sem erro | `VisitRepositoryTests.shouldFindNoRecentVisitsForPetWithoutVisits` (aprovado) | `VisitRepositoryTests.shouldFindNoRecentVisitsForPetWithoutVisits` (aprovado) |
+| C2 | Veterinário válido: formulário aceito e redirecionado | `VisitControllerTests.processNewVisitFormSuccess` (aprovado) | `VisitControllerTests.processNewVisitFormSuccess` (aprovado) |
+| C2 | Veterinário ausente: formulário com erro no campo, nada gravado | `VisitControllerTests.processNewVisitFormHasErrorsWhenVetIsMissing` (aprovado) | `VisitControllerTests.processNewVisitFormHasErrorsWhenVetIsMissing` (aprovado) |
+| C2 | Identificador em formato inválido: formulário com erro no campo, nada gravado | não se aplica | `VisitControllerTests.processNewVisitFormHasErrorsWhenVetIdIsInvalid` (aprovado) |
+| C2 | Veterinário inexistente: formulário com erro no campo, nada gravado | `VisitControllerTests.processNewVisitFormHasErrorsWhenVetDoesNotExist` (aprovado) | `VisitControllerTests.processNewVisitFormHasErrorsWhenVetDoesNotExist` (aprovado) |
+| C2 | Banco: vet_id inexistente rejeitado pela chave estrangeira | `VisitVetIntegrityTests.shouldRejectVisitReferencingMissingVet` (aprovado) | `VisitVetIntegrityTests.shouldRejectVisitReferencingMissingVet` (aprovado) |
+| C2 | Banco: vet_id existente ou nulo aceito | `VisitVetIntegrityTests.shouldAcceptVisitReferencingExistingVetOrNoVet` (aprovado) | `VisitVetIntegrityTests.shouldAcceptVisitReferencingExistingVetOrNoVet` (aprovado) |
+
+Testes executados nos commits de verificação, um acima de cada cenário. Suítes completas: c1-baseline-aceite 85 testes, 0 falhas; c1-modular-aceite 90 testes, 0 falhas; c2-baseline-aceite 86 testes, 0 falhas; c2-modular-aceite 92 testes, 0 falhas. Na baseline do C2 o veterinário é identificado pelo nome, e um texto que não corresponde a nenhum veterinário é o caso "inexistente".
+
 ## Influência da visita inicial automática (artigo, Tabela 8)
 
 | Medida | Baseline | Modular sem a visita inicial | Modular | Efeito da funcionalidade |

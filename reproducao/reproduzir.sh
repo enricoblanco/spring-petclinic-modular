@@ -17,6 +17,12 @@ export C1_MODULAR_REF="${C1_MODULAR_REF:-63771a5478864b9a9c1a31f39324154d2ebbb93
 export C2_BASELINE_REF="${C2_BASELINE_REF:-34c36ba13a264b1ad0f67e967068ad8386b97305}"   # cenario-c2-main
 export C2_MODULAR_REF="${C2_MODULAR_REF:-86eace813bea7beb7cd3d9a5b8ab8eaf788ce64d}"     # cenario-c2-modular
 export CONTROLE_REF="${CONTROLE_REF:-a9481c32a88cc754a0af87bc940d910e161d02f3}"         # modular-sem-visita-inicial
+# Commits de verificação: testes dos critérios de aceitação, um commit acima de cada cenário.
+# Só têm a suíte executada; volume e alcance (Tabela 7) continuam medidos nos commits acima.
+export C1_BASELINE_ACEITE_REF="${C1_BASELINE_ACEITE_REF:-eecef4003968fea780dad67c5ed61f6e86c1ce9b}"
+export C1_MODULAR_ACEITE_REF="${C1_MODULAR_ACEITE_REF:-f679f73ce47ff5322cc9cc51f722d6397b025c17}"
+export C2_BASELINE_ACEITE_REF="${C2_BASELINE_ACEITE_REF:-953d7896be28f0f4793ee35513f4a91cff0b2024}"
+export C2_MODULAR_ACEITE_REF="${C2_MODULAR_ACEITE_REF:-36aaaee6ca5ead8457be7ce03bff08414dd1fe85}"
 
 WT_PARENT="$(mktemp -d)"
 export WT_PARENT
@@ -70,6 +76,15 @@ for spec in "baseline:$BASELINE_REF:tests" "controle:$CONTROLE_REF:tests" "cenar
 	measure "$name" "$WT_PARENT/$name"
 done
 
+echo "==> Critérios de aceitação dos cenários (commits de verificação)"
+for spec in "c1-baseline-aceite:$C1_BASELINE_ACEITE_REF" "c1-modular-aceite:$C1_MODULAR_ACEITE_REF" \
+	"c2-baseline-aceite:$C2_BASELINE_ACEITE_REF" "c2-modular-aceite:$C2_MODULAR_ACEITE_REF"; do
+	IFS=: read -r name ref <<<"$spec"
+	echo "--> $name ($ref)"
+	prepare "$name" "$ref"
+	run_tests "$WT_PARENT/$name"
+done
+
 echo "==> Coletando resultados em $OUT"
 python3 "$ROOT/reproducao/coletar.py" "$ROOT" "$WT_PARENT" "$OUT"
 
@@ -98,6 +113,8 @@ echo "==> Registrando o ambiente em reproducao/ambiente.txt"
 	echo "base dos cenários:          $CENARIO_BASE_REF"
 	echo "C1 baseline / modular:      $C1_BASELINE_REF / $C1_MODULAR_REF"
 	echo "C2 baseline / modular:      $C2_BASELINE_REF / $C2_MODULAR_REF"
+	echo "C1 aceite baseline / modular: $C1_BASELINE_ACEITE_REF / $C1_MODULAR_ACEITE_REF"
+	echo "C2 aceite baseline / modular: $C2_BASELINE_ACEITE_REF / $C2_MODULAR_ACEITE_REF"
 	echo "(versões que declaram o Spring Modulith 1.2.0 são medidas com o 2.1.1, ajustado no worktree)"
 	echo
 	echo "## Dependências resolvidas (versão modular, testRuntimeClasspath)"

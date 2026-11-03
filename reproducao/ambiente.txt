@@ -29,12 +29,14 @@ git version 2.54.0 (Apple Git-157)
 Docker version 29.9.1, build dfc520d
 
 ## Commits medidos
-modular:                    16caecf1df42a7cc2ba9bbfc559215d634e5800c (refatoracao-modular)
+modular:                    f164ae19809891de8713a3362bb446120217cb6c (refatoracao-modular)
 baseline:                   acd6c2bdb27aee9358bfed046fe772e3949b94aa
 controle sem visita inicial: a9481c32a88cc754a0af87bc940d910e161d02f3
 base dos cenários:          49d9597fdaadd9a85600e30485376eb0d8d0585d
 C1 baseline / modular:      d1b961196bf4dd1e5a9cf006b8a1760459212f51 / 63771a5478864b9a9c1a31f39324154d2ebbb931
 C2 baseline / modular:      34c36ba13a264b1ad0f67e967068ad8386b97305 / 86eace813bea7beb7cd3d9a5b8ab8eaf788ce64d
+C1 aceite baseline / modular: eecef4003968fea780dad67c5ed61f6e86c1ce9b / f679f73ce47ff5322cc9cc51f722d6397b025c17
+C2 aceite baseline / modular: 953d7896be28f0f4793ee35513f4a91cff0b2024 / 36aaaee6ca5ead8457be7ce03bff08414dd1fe85
 (versões que declaram o Spring Modulith 1.2.0 são medidas com o 2.1.1, ajustado no worktree)
 
 ## Dependências resolvidas (versão modular, testRuntimeClasspath)

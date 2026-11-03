@@ -6,9 +6,9 @@ Gerado por `reproducao/reproduzir.sh`; não editar à mão. Baseline: commit `ac
 
 | Escopo | Arquivos | Adicionados | Removidos | Renomeados | Modificados | Linhas inseridas | Linhas removidas |
 |---|---|---|---|---|---|---|---|
-| src/main | 26 | 9 | 1 | 1 | 15 | 371 | 176 |
-| src/test | 14 | 4 | 0 | 4 | 6 | 374 | 159 |
-| total | 40 | 13 | 1 | 5 | 21 | 745 | 335 |
+| src/main | 26 | 9 | 1 | 1 | 15 | 360 | 176 |
+| src/test | 15 | 4 | 0 | 4 | 7 | 361 | 158 |
+| total | 41 | 13 | 1 | 5 | 22 | 721 | 334 |
 
 ## Testes automatizados (artigo, Seções 5.2 e 5.8)
 
@@ -62,7 +62,7 @@ Diff de cada cenário em relação à sua base (`acd6c2b` na baseline, `49d9597`
 | Medida | Baseline | Modular sem a visita inicial | Modular | Efeito da funcionalidade |
 |---|---|---|---|---|
 | Testes aprovados | 82 | 85 | 87 | +2 |
-| Arquivos alterados / linhas (vs. baseline) | — | 35 / +588 −332 | 40 / +745 −335 | +5 / +157 |
+| Arquivos alterados / linhas (vs. baseline) | — | 36 / +565 −331 | 41 / +721 −334 | +5 / +156 |
 | Tipos (classes) | 25 | 31 | 33 | +2 |
 | Tipos públicos / total | 18 / 25 (72,0%) | 8 / 31 (25,8%) | 9 / 33 (27,3%) | +1 |
 | Entidades `@Entity` públicas | 6 / 6 (100,0%) | 0 / 6 (0,0%) | 0 / 6 (0,0%) | – |

@@ -8,7 +8,7 @@ O script mede todas as versões usadas no estudo com os mesmos instrumentos:
 |---|---|---|
 | Baseline (monólito tradicional) | `acd6c2b` | `main` |
 | Modular (monólito modular) | checkout atual | `refatoracao-modular`, tag `tcc-final` |
-| Modular sem a visita inicial automática (controle) | `8bb7d23` | `modular-sem-visita-inicial` |
+| Modular sem a visita inicial automática (controle) | `a9481c3` | `modular-sem-visita-inicial` |
 | Base modular dos cenários | `49d9597` | — |
 | Cenário C1, baseline / modular | `d1b9611` / `63771a5` | `cenario-c1-main` / `cenario-c1-modular` |
 | Cenário C2, baseline / modular | `34c36ba` / `86eace8` | `cenario-c2-main` / `cenario-c2-modular` |

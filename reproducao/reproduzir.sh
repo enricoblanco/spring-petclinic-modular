@@ -16,7 +16,7 @@ export C1_BASELINE_REF="${C1_BASELINE_REF:-d1b961196bf4dd1e5a9cf006b8a1760459212
 export C1_MODULAR_REF="${C1_MODULAR_REF:-63771a5478864b9a9c1a31f39324154d2ebbb931}"     # cenario-c1-modular
 export C2_BASELINE_REF="${C2_BASELINE_REF:-34c36ba13a264b1ad0f67e967068ad8386b97305}"   # cenario-c2-main
 export C2_MODULAR_REF="${C2_MODULAR_REF:-86eace813bea7beb7cd3d9a5b8ab8eaf788ce64d}"     # cenario-c2-modular
-export CONTROLE_REF="${CONTROLE_REF:-8bb7d23cf0b4b27e968f1f2d4a0a2d99ceaeb85f}"         # modular-sem-visita-inicial
+export CONTROLE_REF="${CONTROLE_REF:-a9481c32a88cc754a0af87bc940d910e161d02f3}"         # modular-sem-visita-inicial
 
 WT_PARENT="$(mktemp -d)"
 export WT_PARENT

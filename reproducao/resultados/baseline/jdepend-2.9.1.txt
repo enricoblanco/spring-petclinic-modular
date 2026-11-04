@@ -90,8 +90,8 @@ Stats:
     Ce: 2
 
     A: 0
-    I: 0,5
-    D: 0,5
+    I: 0.5
+    D: 0.5
 
 Abstract Classes:
 
@@ -120,9 +120,9 @@ Stats:
     Ca: 0
     Ce: 9
 
-    A: 0,29
+    A: 0.29
     I: 1
-    D: 0,29
+    D: 0.29
 
 Abstract Classes:
     org.springframework.samples.petclinic.owner.OwnerRepository
@@ -194,9 +194,9 @@ Stats:
     Ca: 0
     Ce: 8
 
-    A: 0,25
+    A: 0.25
     I: 1
-    D: 0,25
+    D: 0.25
 
 Abstract Classes:
     org.springframework.samples.petclinic.vet.VetRepository
@@ -277,10 +277,10 @@ org.springframework.data.domain,0,0,2,0,0,0,1,1
 org.springframework.data.jpa.repository,0,0,1,0,0,0,1,1
 org.springframework.data.repository,0,0,1,0,0,0,1,1
 org.springframework.samples.petclinic,1,0,0,2,0,1,0,1
-org.springframework.samples.petclinic.model,3,0,2,2,0,0,5,0,5,1
-org.springframework.samples.petclinic.owner,7,2,0,9,0,29,1,0,29,1
+org.springframework.samples.petclinic.model,3,0,2,2,0,0.5,0.5,1
+org.springframework.samples.petclinic.owner,7,2,0,9,0.29,1,0.29,1
 org.springframework.samples.petclinic.system,3,0,0,5,0,1,0,1
-org.springframework.samples.petclinic.vet,4,1,0,8,0,25,1,0,25,1
+org.springframework.samples.petclinic.vet,4,1,0,8,0.25,1,0.25,1
 org.springframework.ui,0,0,1,0,0,0,1,1
 org.springframework.util,0,0,1,0,0,0,1,1
 org.springframework.validation,0,0,1,0,0,0,1,1

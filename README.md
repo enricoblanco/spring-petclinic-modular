@@ -130,7 +130,7 @@ git diff --stat acd6c2b cenario-c2-main
 git diff --stat 49d9597 cenario-c2-modular
 ```
 
-O commit `49d9597` é a versão modular usada como base dos cenários. Em relação a ele, a tag `tcc-final` só mudou o nome de uma consulta (`findByPetIdOrderByDateAsc`), para exibir as visitas em ordem crescente de data, como a baseline.
+O commit `49d9597` é a versão modular usada como base dos cenários. Em relação a ele, a tag `tcc-final` mudou o nome de uma consulta (`findByPetIdOrderByDateAsc`), para exibir as visitas em ordem crescente de data, como a baseline, e aplicou o spring-javaformat, que só alterou espaços, quebras de linha e a quebra de comentários.
 
 ## 6. Observações
 

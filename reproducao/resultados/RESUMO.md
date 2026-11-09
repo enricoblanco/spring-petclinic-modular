@@ -1,6 +1,6 @@
 # Resumo da reprodução
 
-Gerado por `reproducao/reproduzir.sh`; não editar à mão. Baseline: commit `acd6c2b` (branch `main`); modular: tag `tcc-final` (branch `refatoracao-modular`). Os números do SonarQube (Tabelas 5 e 6) ficam fora da reprodução automática.
+Gerado por `reproducao/reproduzir.sh`; não editar à mão. Baseline: commit `acd6c2b` (branch `main`); modular: tag `tcc-final` (branch `refatoracao-modular`). Os números do SonarQube (Tabelas 4 e 5) não são reproduzidos aqui nem no GitHub Actions: foram coletados à parte, num servidor local; `reproducao/README.md` explica como repeti-los manualmente.
 
 ## Esforço da refatoração (artigo, Tabela 1)
 
@@ -46,7 +46,7 @@ Gerado por `reproducao/reproduzir.sh`; não editar à mão. Baseline: commit `ac
 
 Ca e Ce contam pacotes do projeto. A e D "ArchUnit" consideram só classes públicas; "todas" consideram todas as classes do pacote.
 
-## Cenários de mudança (artigo, Tabela 7)
+## Cenários de mudança (artigo, Tabela 6)
 
 | Cenário | Versão | Arquivos alterados | Linhas de código (+/−) | Módulos de produção tocados | Arquivos existentes de outros contextos | Dependências de implementação | Testes (falhas) |
 |---|---|---|---|---|---|---|---|
@@ -57,7 +57,7 @@ Ca e Ce contam pacotes do projeto. A e D "ArchUnit" consideram só classes públ
 
 Diff de cada cenário em relação à sua base (`acd6c2b` na baseline, `49d9597` na modular). Linhas de código sem comentários e linhas em branco. "Outros contextos": arquivos já existentes, modificados, que não pertencem ao conceito de visita (nem SQL). A lista de arquivos de cada cenário está em `cenarios/<cenário>/arquivos.csv`.
 
-## Critérios de aceitação dos cenários (artigo, Seções 4.4.4 e 5.7)
+## Critérios de aceitação dos cenários (artigo, Quadro 6)
 
 | Cenário | Critério | Baseline | Modular |
 |---|---|---|---|
@@ -73,7 +73,7 @@ Diff de cada cenário em relação à sua base (`acd6c2b` na baseline, `49d9597`
 
 Testes executados nos commits de verificação, um acima de cada cenário. Suítes completas: c1-baseline-aceite 85 testes, 0 falhas; c1-modular-aceite 90 testes, 0 falhas; c2-baseline-aceite 86 testes, 0 falhas; c2-modular-aceite 92 testes, 0 falhas. Na baseline do C2 o veterinário é identificado pelo nome, e um texto que não corresponde a nenhum veterinário é o caso "inexistente".
 
-## Influência da visita inicial automática (artigo, Tabela 8)
+## Influência da visita inicial automática (artigo, Tabela 7)
 
 | Medida | Baseline | Modular sem a visita inicial | Modular | Efeito da funcionalidade |
 |---|---|---|---|---|

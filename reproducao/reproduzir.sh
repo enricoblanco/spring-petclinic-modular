@@ -18,7 +18,7 @@ export C2_BASELINE_REF="${C2_BASELINE_REF:-34c36ba13a264b1ad0f67e967068ad8386b97
 export C2_MODULAR_REF="${C2_MODULAR_REF:-86eace813bea7beb7cd3d9a5b8ab8eaf788ce64d}"     # cenario-c2-modular
 export CONTROLE_REF="${CONTROLE_REF:-a9481c32a88cc754a0af87bc940d910e161d02f3}"         # modular-sem-visita-inicial
 # Commits de verificação: testes dos critérios de aceitação, um commit acima de cada cenário.
-# Só têm a suíte executada; volume e alcance (Tabela 7) continuam medidos nos commits acima.
+# Só têm a suíte executada; volume e alcance (Tabela 6) continuam medidos nos commits acima.
 export C1_BASELINE_ACEITE_REF="${C1_BASELINE_ACEITE_REF:-eecef4003968fea780dad67c5ed61f6e86c1ce9b}"
 export C1_MODULAR_ACEITE_REF="${C1_MODULAR_ACEITE_REF:-f679f73ce47ff5322cc9cc51f722d6397b025c17}"
 export C2_BASELINE_ACEITE_REF="${C2_BASELINE_ACEITE_REF:-953d7896be28f0f4793ee35513f4a91cff0b2024}"

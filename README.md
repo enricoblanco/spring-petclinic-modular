@@ -38,7 +38,7 @@ O script leva de 10 a 20 minutos e faz, em ordem:
 1. roda a suíte de testes da versão modular (checkout atual);
 2. cria worktrees temporários da baseline (`acd6c2b`), da variante de controle sem a visita inicial e dos quatro cenários de mudança, e roda a suíte de testes de cada um;
 3. gera as métricas de Martin e os indicadores de encapsulamento de todas essas versões;
-4. calcula pelo `git diff` o esforço da refatoração (Tabela 1) e o custo de cada cenário (Tabela 7);
+4. calcula pelo `git diff` o esforço da refatoração (Tabela 1) e o custo de cada cenário (Tabela 6);
 5. grava tudo em `reproducao/resultados/` e o ambiente usado em `reproducao/ambiente.txt`;
 6. remove os worktrees temporários.
 
@@ -59,8 +59,8 @@ Se não aparecer nada, os resultados são idênticos aos versionados. Se aparece
 | `<versão>/testes.csv` | testes por classe e total | Seções 5.2 e 5.8 |
 | `<versão>/encapsulamento.{csv,md,txt}` | tipos, entidades, repositórios e beans públicos; dependências entre módulos; ciclos | Tabela 2 |
 | `<versão>/martin-metrics.{csv,md,txt}` | Nc, Na, Ca, Ce, I, A e D por pacote | Tabela 3 |
-| `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 7 |
-| `controle-sem-visita-inicial/` | as mesmas medições na variante sem a visita inicial automática | Tabela 8 |
+| `cenarios/<cenário>/arquivos.csv` | cada arquivo alterado no cenário, com linhas de código e contexto | Tabela 6 |
+| `controle-sem-visita-inicial/` | as mesmas medições na variante sem a visita inicial automática | Tabela 7 |
 
 `<versão>` é `baseline`, `modular` ou `controle-sem-visita-inicial`. O ambiente da execução fica em `reproducao/ambiente.txt` (Quadro 2). Os arquivos `.txt` trazem os detalhes que justificam cada número, como a lista de classes de cada pacote e cada dependência entre módulos.
 
@@ -72,7 +72,7 @@ Todos os comandos abaixo rodam na raiz do repositório, com a tag `tcc-final` (o
 # Testes da versão modular (inclui o ModularityTests, que roda o verify() do Spring Modulith)
 ./gradlew test
 
-# Só a verificação de modularidade do Spring Modulith (Tabela 4)
+# Só a verificação de modularidade do Spring Modulith (Quadro 5)
 ./gradlew test --tests '*ModularityTests'
 
 # Métricas de Martin (Tabela 3) -> build/reports/martin-metrics/
@@ -95,7 +95,7 @@ Os relatórios saem com o sufixo `-baseline` nas mesmas pastas. Os instrumentos 
 
 ## 4. SonarQube (opcional, fora da reprodução automática)
 
-As Tabelas 5 e 6 do artigo vêm do SonarQube Community Build, que precisa de um servidor. Para repetir:
+As Tabelas 4 e 5 do artigo vêm do SonarQube Community Build 26.10, que precisa de um servidor e de um token. Essas métricas **não são reproduzidas** pelo `reproduzir.sh` nem pelo workflow do GitHub Actions: foram coletadas à parte, num servidor local. Para repeti-las (o passo a passo completo, com a leitura pela API, está em [`reproducao/README.md`](reproducao/README.md#sonarqube-reprodução-manual)):
 
 ```bash
 docker run -d --name sonarqube -p 9000:9000 sonarqube:community
@@ -109,9 +109,9 @@ docker run -d --name sonarqube -p 9000:9000 sonarqube:community
 SONAR_TOKEN=<seu-token> ./gradlew sonar
 ```
 
-As métricas aparecem no painel do projeto (aba *Measures*). Para a baseline, faça o checkout de `acd6c2b`. O `build.gradle` desse commit traz um token antigo escrito no arquivo, que não deve ser usado: troque o valor de `sonar.token` pelo seu token.
+As métricas aparecem no painel do projeto (aba *Measures*). Para a baseline, faça o checkout de `acd6c2b`. O `build.gradle` desse commit traz um token antigo escrito no arquivo, que não deve ser usado: passe o seu com `./gradlew sonar -Dsonar.token=<seu-token>`. A baseline não aplica o JaCoCo, então a análise dela não tem cobertura.
 
-## 5. Cenários de mudança (Tabela 7)
+## 5. Cenários de mudança (Tabela 6)
 
 Os dois cenários foram implementados nas duas versões, cada um em uma branch:
 
@@ -136,7 +136,7 @@ O commit `49d9597` é a versão modular usada como base dos cenários. Em relaç
 
 - **Versões:** Spring Boot 4.1.0, Spring Framework 7.0.8, Spring Modulith 2.1.1, ArchUnit 1.4.2, Hibernate ORM 7.4.1 e JUnit Jupiter 6.0.3. As versões efetivas da última execução ficam em `reproducao/ambiente.txt`.
 - **Baseline e Spring Modulith:** o commit da baseline declara o Spring Modulith 1.2.0, feito para o Spring Boot 3.3. O script troca para 2.1.1 só no worktree temporário, sem alterar o código da aplicação nem commitar nada na `main`.
-- **Variante de controle:** a versão modular acrescenta uma funcionalidade (a visita inicial criada automaticamente ao cadastrar um animal). A branch `modular-sem-visita-inicial` é a mesma versão sem essa funcionalidade e serve para medir a influência dela nos resultados (Tabela 8).
+- **Variante de controle:** a versão modular acrescenta uma funcionalidade (a visita inicial criada automaticamente ao cadastrar um animal). A branch `modular-sem-visita-inicial` é a mesma versão sem essa funcionalidade e serve para medir a influência dela nos resultados (Tabela 7).
 - **Por que ArchUnit e não JDepend:** o JDepend 2.9.1 não lê bytecode do Java 21 e descarta classes com lambdas, referências a métodos e records. A task se chama `jdependReport` por histórico, mas usa o ArchUnit.
 
 ---

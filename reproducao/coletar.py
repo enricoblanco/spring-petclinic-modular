@@ -230,8 +230,9 @@ MARTIN_COLS = [("nc", "Nc"), ("public", "Classes públicas"), ("ca", "Ca"), ("ce
 
 L = ["# Resumo da reprodução", "",
      "Gerado por `reproducao/reproduzir.sh`; não editar à mão. Baseline: commit `acd6c2b` (branch `main`); "
-     "modular: tag `tcc-final` (branch `refatoracao-modular`). Os números do SonarQube (Tabelas 5 e 6) "
-     "ficam fora da reprodução automática.", ""]
+     "modular: tag `tcc-final` (branch `refatoracao-modular`). Os números do SonarQube (Tabelas 4 e 5) "
+     "não são reproduzidos aqui nem no GitHub Actions: foram coletados à parte, num servidor local; "
+     "`reproducao/README.md` explica como repeti-los manualmente.", ""]
 
 L += ["## Esforço da refatoração (artigo, Tabela 1)", "",
       "| Escopo | Arquivos | Adicionados | Removidos | Renomeados | Modificados | Linhas inseridas | Linhas removidas |",
@@ -264,7 +265,7 @@ for pkg in sorted(set(martin["baseline"]) | set(martin["modular"])):
 L += ["", "Ca e Ce contam pacotes do projeto. A e D \"ArchUnit\" consideram só classes públicas; "
       "\"todas\" consideram todas as classes do pacote.", ""]
 
-L += ["## Cenários de mudança (artigo, Tabela 7)", "",
+L += ["## Cenários de mudança (artigo, Tabela 6)", "",
       "| Cenário | Versão | Arquivos alterados | Linhas de código (+/−) | Módulos de produção tocados | "
       "Arquivos existentes de outros contextos | Dependências de implementação | Testes (falhas) |",
       "|---|---|---|---|---|---|---|---|"]
@@ -333,7 +334,7 @@ accept_rows = [[sc, crit, tb or "", outcome(sc, "baseline", tb), tm or "", outco
 write_csv(os.path.join(OUT, "cenarios", "aceite.csv"),
           ["cenario", "criterio", "teste_baseline", "resultado_baseline", "teste_modular", "resultado_modular"],
           accept_rows)
-L += ["## Critérios de aceitação dos cenários (artigo, Seções 4.4.4 e 5.7)", "",
+L += ["## Critérios de aceitação dos cenários (artigo, Quadro 6)", "",
       "| Cenário | Critério | Baseline | Modular |", "|---|---|---|---|"]
 for sc, crit, tb, rb, tm, rm in accept_rows:
     L.append(f"| {sc} | {crit} | {f'`{tb}` ({rb})' if tb else rb} | {f'`{tm}` ({rm})' if tm else rm} |")
@@ -356,7 +357,7 @@ def delta(key):
     return variation(ctrl[key], mod[key], False)
 
 
-L += ["## Influência da visita inicial automática (artigo, Tabela 8)", "",
+L += ["## Influência da visita inicial automática (artigo, Tabela 7)", "",
       "| Medida | Baseline | Modular sem a visita inicial | Modular | Efeito da funcionalidade |",
       "|---|---|---|---|---|",
       f"| Testes aprovados | {tests['baseline'][1]} | {tests['controle'][1]} | {tests['modular'][1]} | "

@@ -1,0 +1,50 @@
+{
+  "component": {
+    "key": "spring-petclinic-modular",
+    "name": "spring-petclinic",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "complexity",
+        "value": "175"
+      },
+      {
+        "metric": "code_smells",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "duplicated_lines_density",
+        "value": "0.0",
+        "bestValue": true
+      },
+      {
+        "metric": "functions",
+        "value": "110"
+      },
+      {
+        "metric": "cognitive_complexity",
+        "value": "78",
+        "bestValue": false
+      },
+      {
+        "metric": "classes",
+        "value": "33"
+      },
+      {
+        "metric": "ncloc",
+        "value": "1061"
+      },
+      {
+        "metric": "sqale_index",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "sqale_rating",
+        "value": "1.0",
+        "bestValue": true
+      }
+    ]
+  }
+}

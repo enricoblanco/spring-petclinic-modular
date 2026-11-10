@@ -1,0 +1,232 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 100,
+    "total": 13
+  },
+  "baseComponent": {
+    "key": "spring-petclinic-modular",
+    "name": "spring-petclinic",
+    "qualifier": "TRK",
+    "measures": []
+  },
+  "components": [
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic",
+      "name": "main/java/org/springframework/samples/petclinic",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "33"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "78",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "175"
+        },
+        {
+          "metric": "ncloc",
+          "value": "1061"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic/model",
+      "name": "model",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic/model",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "3"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "1",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "11"
+        },
+        {
+          "metric": "ncloc",
+          "value": "71"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic/model",
+      "name": "model",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic/model",
+      "measures": []
+    },
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic/owner",
+      "name": "owner",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic/owner",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "13"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "66",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "107"
+        },
+        {
+          "metric": "ncloc",
+          "value": "558"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic/owner",
+      "name": "owner",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic/owner",
+      "measures": []
+    },
+    {
+      "key": "spring-petclinic-modular:src",
+      "name": "src",
+      "qualifier": "DIR",
+      "path": "src",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "33"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "78",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "175"
+        },
+        {
+          "metric": "ncloc",
+          "value": "1061"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic/system",
+      "name": "system",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic/system",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "4"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "0",
+          "bestValue": true
+        },
+        {
+          "metric": "complexity",
+          "value": "8"
+        },
+        {
+          "metric": "ncloc",
+          "value": "68"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic/system",
+      "name": "system",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic/system",
+      "measures": []
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic",
+      "name": "test/java/org/springframework/samples/petclinic",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic",
+      "measures": []
+    },
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic/vet",
+      "name": "vet",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic/vet",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "5"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "4",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "14"
+        },
+        {
+          "metric": "ncloc",
+          "value": "130"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic/vet",
+      "name": "vet",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic/vet",
+      "measures": []
+    },
+    {
+      "key": "spring-petclinic-modular:src/main/java/org/springframework/samples/petclinic/visit",
+      "name": "visit",
+      "qualifier": "DIR",
+      "path": "src/main/java/org/springframework/samples/petclinic/visit",
+      "measures": [
+        {
+          "metric": "classes",
+          "value": "6"
+        },
+        {
+          "metric": "cognitive_complexity",
+          "value": "7",
+          "bestValue": false
+        },
+        {
+          "metric": "complexity",
+          "value": "30"
+        },
+        {
+          "metric": "ncloc",
+          "value": "202"
+        }
+      ]
+    },
+    {
+      "key": "spring-petclinic-modular:src/test/java/org/springframework/samples/petclinic/visit",
+      "name": "visit",
+      "qualifier": "DIR",
+      "path": "src/test/java/org/springframework/samples/petclinic/visit",
+      "measures": []
+    }
+  ]
+}

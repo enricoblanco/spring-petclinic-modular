@@ -90,4 +90,4 @@ As Tabelas 4 e 5 vêm do SonarQube Community Build 26.10 (servidor `26.10.0.1330
    curl -s -u <seu-token>: "http://localhost:9000/api/measures/component?component=spring-petclinic-modular&metricKeys=ncloc,classes,functions,complexity,cognitive_complexity,code_smells,duplicated_lines_density"
    ```
 
-As duas versões usam a mesma chave de projeto, então cada análise fica no histórico do mesmo projeto (`api/measures/search_history`). Os números podem variar com outra versão do servidor, do analisador Java ou do perfil de qualidade.
+As respostas da API usadas no artigo estão em `resultados/sonar/`, com a origem de cada arquivo descrita no `LEIAME.md`. O `reproduzir.sh` preserva essa pasta e não refaz esses valores. As duas versões usam a mesma chave de projeto, então cada análise fica no histórico do mesmo projeto (`api/measures/search_history`). Os números podem variar com outra versão do servidor, do analisador Java ou do perfil de qualidade.

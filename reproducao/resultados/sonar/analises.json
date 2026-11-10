@@ -1,0 +1,113 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 100,
+    "total": 7
+  },
+  "analyses": [
+    {
+      "key": "5f78b730-20e5-42e7-a574-6d4ba1307066",
+      "date": "2026-11-03T22:43:24+0000",
+      "events": [
+        {
+          "key": "20a2027d-ee38-4784-b148-3a9c42ea49c7",
+          "category": "VERSION",
+          "name": "4.0.0-SNAPSHOT"
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "a56472f19e45f571cbfad56f008ae9118bac91b3",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "2bafe58d-6a1d-43a4-aef8-2aca06d356a8",
+      "date": "2026-11-03T22:43:03+0000",
+      "events": [],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "a9481c32a88cc754a0af87bc940d910e161d02f3",
+      "detectedCI": "undetected",
+      "relativePathFromScmRoot": "../../../../../../private/tmp/claude-501/-Users-enrico-dev-spring-petclinic-modular/aaf17140-b57d-40cf-85f2-417870a05983/scratchpad/ctrl"
+    },
+    {
+      "key": "8aa63d38-b7ca-40ca-9e00-b99205f06f1f",
+      "date": "2026-10-27T03:00:34+0000",
+      "events": [
+        {
+          "key": "9fa2c918-801b-4a89-a3be-ca1b0531c42f",
+          "category": "QUALITY_GATE",
+          "name": "Passed",
+          "description": ""
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "abcc5d896bc9752b1352fed845c54da8a01b6c2f",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "c0c67d66-51b5-430f-bb1c-4a9da6075658",
+      "date": "2026-10-25T19:43:30+0000",
+      "events": [
+        {
+          "key": "463bd552-dfc0-434e-bbdd-7dcda601573b",
+          "category": "QUALITY_GATE",
+          "name": "Failed",
+          "description": "New Issues > 0, Coverage on New Code < 80"
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "abcc5d896bc9752b1352fed845c54da8a01b6c2f",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "246e6462-f624-4b9f-854c-b65db12e4ab3",
+      "date": "2026-10-25T19:37:36+0000",
+      "events": [
+        {
+          "key": "a698109f-fc1c-4337-917e-1491f284683d",
+          "category": "QUALITY_GATE",
+          "name": "Passed",
+          "description": ""
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "acd6c2bdb27aee9358bfed046fe772e3949b94aa",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "50705483-33f9-4ec1-a741-025827219345",
+      "date": "2026-10-24T22:33:20+0000",
+      "events": [
+        {
+          "key": "aab409f6-d337-454c-aa7d-fd22bc55bee6",
+          "category": "QUALITY_GATE",
+          "name": "Failed",
+          "description": "New Issues > 0, Coverage on New Code < 80"
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "acd6c2bdb27aee9358bfed046fe772e3949b94aa",
+      "detectedCI": "undetected"
+    },
+    {
+      "key": "0e7e4bb5-7588-4fe1-ae15-061229be6e43",
+      "date": "2026-10-21T00:55:25+0000",
+      "events": [
+        {
+          "key": "26c3659e-8a0a-4781-88ba-6254d1392e69",
+          "category": "SQ_UPGRADE",
+          "name": "26.10.0.133078"
+        }
+      ],
+      "projectVersion": "4.0.0-SNAPSHOT",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "500158f732419217507c7656904b8e6aa1bcc0d6",
+      "detectedCI": "undetected"
+    }
+  ]
+}

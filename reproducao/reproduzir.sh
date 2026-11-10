@@ -54,8 +54,10 @@ measure() {
 }
 
 cd "$ROOT"
-rm -rf "$OUT"
+# Recria os resultados do zero, menos resultados/sonar/: evidência do SonarQube coletada à parte,
+# que este script não reproduz.
 mkdir -p "$OUT"
+find "$OUT" -mindepth 1 -maxdepth 1 ! -name sonar -exec rm -rf {} +
 
 echo "==> Versão modular (checkout atual)"
 ./gradlew --console=plain cleanTest test classes
